@@ -1,0 +1,1130 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Reservoir — Task Flow</title><link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet"><style>
+:root{
+--bg:#f5f6fb;--surface:#fff;--ink:#0f172a;--ink-2:#334155;--muted:#5b6474;--faint:#94a3b8;
+--border:#e8eaf1;--border-2:#eef1f7;--hair:#f1f3f9;
+--indigo-50:#eef2ff;--indigo-100:#e0e7ff;--indigo-200:#c7d2fe;--indigo-500:#6366f1;--indigo-600:#4f46e5;--indigo-700:#4338ca;--indigo-800:#3730a3;
+--emerald-50:#ecfdf5;--emerald-100:#d1fae5;--emerald-600:#059669;--emerald-700:#047857;
+--amber-50:#fffbeb;--amber-100:#fef3c7;--amber-500:#f59e0b;--amber-700:#b45309;
+--orange-50:#fff7ed;--orange-100:#ffedd5;--orange-600:#ea580c;--orange-700:#c2410c;
+--red-50:#fef2f2;--red-100:#fee2e2;--red-600:#dc2626;--red-700:#b91c1c;
+--shadow-xs:0 1px 2px rgba(16,24,40,.05);
+--shadow-sm:0 1px 3px rgba(16,24,40,.06),0 1px 2px rgba(16,24,40,.04);
+--shadow-md:0 4px 12px rgba(16,24,40,.07),0 2px 4px rgba(16,24,40,.04);
+--shadow-lg:0 12px 32px rgba(16,24,40,.10),0 4px 10px rgba(16,24,40,.05);
+--r-card:16px;
+}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:"Inter",system-ui,-apple-system,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;font-size:14px;line-height:1.5;-webkit-font-smoothing:antialiased}
+.wrap{max-width:1400px;margin:0 auto;padding:24px 20px 80px}
+.topbar{background:var(--surface);border:1px solid var(--border);border-radius:20px;box-shadow:var(--shadow-sm);overflow:hidden}
+.topbar-accent{height:4px;background:linear-gradient(90deg,var(--indigo-600),var(--indigo-500) 40%,#8b87f5 70%,var(--indigo-200))}
+.topbar-inner{padding:20px 22px}
+.tb-row{display:flex;flex-wrap:wrap;gap:16px;align-items:center;justify-content:space-between}
+.brand{display:flex;gap:13px;align-items:center;min-width:260px}
+.logo{width:44px;height:44px;border-radius:12px;background:linear-gradient(140deg,var(--indigo-600),var(--indigo-800));display:grid;place-items:center;flex:0 0 auto;box-shadow:0 6px 16px rgba(79,70,229,.30);color:#fff;font-weight:800;font-size:15px}
+.brandmark{display:flex;flex-direction:column;line-height:1}
+.brandmark .wordmark{font-size:19px;font-weight:800;letter-spacing:-.03em;color:#1a2b6b}
+.brandmark .divtag{font-size:9.5px;font-weight:750;letter-spacing:.04em;color:#f5760a;margin-top:1px;text-transform:uppercase}
+.brandsep{width:1px;height:34px;background:var(--border);margin:0 2px}
+h1{font-size:20px;line-height:1.2;margin:0;letter-spacing:-.02em;font-weight:750}
+.subline{color:var(--muted);font-size:12.5px;margin-top:3px;font-weight:500}
+.snapshot{display:inline-flex;align-items:center;gap:9px;font-size:12.5px;color:var(--ink-2);background:var(--surface);border:1px solid var(--border);border-radius:11px;padding:12px 15px;min-height:44px;font-weight:550;box-shadow:var(--shadow-xs)}
+.snapshot .live{width:8px;height:8px;border-radius:50%;background:var(--emerald-600);box-shadow:0 0 0 3px var(--emerald-100)}
+
+.col-kpi{display:flex;align-items:center;gap:11px;margin-top:12px;padding-top:12px;border-top:1px dashed var(--border-2)}
+.kpi-ic{width:34px;height:34px;border-radius:10px;display:grid;place-items:center;flex:0 0 auto;font-size:13px;font-weight:800}
+.kpi-indigo{background:var(--indigo-50);color:var(--indigo-600)}
+.kpi-red{background:var(--red-50);color:var(--red-600)}
+.kpi-main{display:flex;flex-direction:column}
+.kpi-val{font-size:22px;font-weight:800;letter-spacing:-.02em;line-height:1;font-variant-numeric:tabular-nums}
+.kpi-label{font-size:10.5px;color:var(--muted);font-weight:600;margin-top:3px}
+.kpi-flag{margin-left:auto;font-size:10.5px;font-weight:750;padding:4px 10px;border-radius:999px;background:var(--amber-100);color:var(--amber-700);white-space:nowrap}
+.kpi-flag.ok{background:var(--emerald-50);color:var(--emerald-700)}
+.kpi-flag.full{background:var(--red-50);color:var(--red-700)}
+.kpi-note{font-size:11px;color:var(--muted);font-weight:600;margin-top:8px}
+.kpi-note b{color:var(--ink)}
+
+.board{display:grid;grid-template-columns:1fr 1fr 1.15fr;gap:16px;align-items:start}
+.col{background:var(--surface);border:1px solid var(--border);border-radius:18px;box-shadow:var(--shadow-sm);overflow:hidden}
+.col-head{padding:16px 17px 14px;border-bottom:1px solid var(--border-2)}
+.col-tier{font-size:10.5px;font-weight:750;color:var(--faint);text-transform:uppercase;letter-spacing:.06em}
+.col-title{font-size:15px;font-weight:750;margin-top:3px;letter-spacing:-.01em}
+.col-desc{font-size:12px;color:var(--muted);margin-top:5px;line-height:1.45}
+.col-count{display:flex;align-items:center;justify-content:space-between;margin-top:12px}
+.gauge{height:6px;border-radius:99px;background:var(--border-2);margin-top:10px;overflow:hidden}
+.gauge-fill{height:100%;border-radius:99px;background:linear-gradient(90deg,var(--indigo-600),var(--indigo-500))}
+.gauge-fill.warn{background:linear-gradient(90deg,var(--orange-600),var(--amber-500))}
+.col-body{padding:12px;display:flex;flex-direction:column;gap:10px;max-height:640px;overflow-y:auto}
+
+.tcard{border:1px solid var(--border);border-radius:13px;padding:12px 13px;position:relative;background:var(--surface);transition:box-shadow .15s,border-color .15s}
+.tcard:hover{box-shadow:var(--shadow-sm);border-color:var(--indigo-200)}
+.tcard.card-pop{animation:cardPop .5s cubic-bezier(.34,1.56,.64,1)}
+@keyframes cardPop{0%{transform:scale(.85) translateY(8px);opacity:.4}60%{transform:scale(1.02) translateY(-2px);opacity:1}100%{transform:scale(1) translateY(0)}}
+.tcard.flash-up{animation:cardPop .5s cubic-bezier(.34,1.56,.64,1), flashUp .65s ease}
+.tcard.flash-down{animation:cardPop .5s cubic-bezier(.34,1.56,.64,1), flashDown .65s ease}
+@keyframes flashUp{0%{box-shadow:0 0 0 0 rgba(16,185,129,.55)}40%{box-shadow:0 0 0 5px rgba(16,185,129,.35)}100%{box-shadow:0 0 0 0 rgba(16,185,129,0)}}
+@keyframes flashDown{0%{box-shadow:0 0 0 0 rgba(245,158,11,.55)}40%{box-shadow:0 0 0 5px rgba(245,158,11,.35)}100%{box-shadow:0 0 0 0 rgba(245,158,11,0)}}
+.tcard::before{content:"";position:absolute;left:0;top:10px;bottom:10px;width:3px;border-radius:3px}
+.tcard.age-fresh::before{background:var(--emerald-600)}
+.tcard.age-warn::before{background:var(--amber-500)}
+.tcard.age-stale::before{background:var(--red-600)}
+.tc-top{display:flex;align-items:center;gap:8px;margin-bottom:6px;padding-left:8px}
+.grip-handle{display:flex;align-items:center;justify-content:center;width:28px;height:28px;border-radius:7px;color:var(--muted);flex:0 0 auto;cursor:grab;margin-right:2px;margin-left:-4px}
+.grip-handle.locked{cursor:not-allowed;color:var(--faint);opacity:.4}
+.grip-handle.locked:hover{background:none;color:var(--faint)}
+.grip-handle:hover{color:var(--indigo-600);background:var(--indigo-50)}
+.grip-handle:hover{color:var(--indigo-600)}
+.tcard[draggable="true"]:active .grip-handle{cursor:grabbing}
+.tcard.dragging{opacity:.35}
+.tcard.drag-over-top{box-shadow:inset 0 2px 0 0 var(--indigo-500)}
+.tkey{font-size:11.5px;font-weight:750;color:var(--indigo-700)}
+.tsize{font-size:10px;font-weight:700;color:var(--muted);background:#eef1f7;border-radius:6px;padding:1px 6px}
+.slotnum{width:22px;height:22px;border-radius:7px;background:var(--indigo-600);color:#fff;font-size:11px;font-weight:750;display:grid;place-items:center;flex:0 0 auto}
+.tc-title{font-size:13px;font-weight:650;padding-left:8px;line-height:1.35;margin-bottom:8px}
+.tc-meta{display:flex;align-items:center;gap:8px;padding-left:8px;flex-wrap:wrap}
+.tc-status{padding-left:8px;margin-bottom:7px}
+.owner{display:inline-flex;align-items:center;gap:6px;font-size:11px;color:var(--ink-2);font-weight:550}
+.avatar{width:18px;height:18px;border-radius:50%;background:var(--indigo-100);color:var(--indigo-700);font-size:9px;font-weight:750;display:grid;place-items:center}
+.agebadge{font-size:10.5px;font-weight:700;padding:2px 8px;border-radius:999px;margin-left:auto}
+.age-fresh .agebadge{background:var(--emerald-50);color:var(--emerald-700)}
+.age-warn .agebadge{background:var(--amber-100);color:var(--amber-700)}
+.age-stale .agebadge{background:var(--red-100);color:var(--red-700)}
+.tc-actions{display:flex;gap:7px;margin-top:11px;padding-left:8px;flex-wrap:wrap}
+.abtn{display:inline-flex;align-items:center;gap:6px;font:inherit;font-size:11.5px;font-weight:650;border-radius:8px;height:30px;padding:0 12px;border:1px solid var(--border);background:var(--surface);color:var(--ink-2);cursor:pointer;transition:background .15s,border-color .15s,color .15s,box-shadow .15s,transform .1s;white-space:nowrap}
+.abtn svg{flex:0 0 auto;width:13px;height:13px}
+.abtn:hover{background:var(--indigo-50);border-color:var(--indigo-200);color:var(--indigo-700)}
+.abtn:active{transform:scale(.97)}
+.abtn.primary{background:var(--indigo-600);border-color:var(--indigo-600);color:#fff;box-shadow:0 2px 6px rgba(79,70,229,.28)}
+.abtn.primary:hover{background:var(--indigo-700);border-color:var(--indigo-700);box-shadow:0 3px 9px rgba(79,70,229,.35)}
+.abtn.danger{color:var(--red-700);border-color:var(--red-100);background:var(--red-50)}
+.abtn.danger:hover{background:var(--red-600);border-color:var(--red-600);color:#fff}
+.abtn.ghost{border-style:dashed;color:var(--muted)}
+.abtn.ghost:hover{color:var(--indigo-700);border-color:var(--indigo-300,var(--indigo-200));border-style:dashed}
+.abtn:disabled{opacity:.45;cursor:not-allowed;background:var(--surface);border-color:var(--border);color:var(--faint);box-shadow:none}
+.abtn:disabled:hover{background:var(--surface);border-color:var(--border);color:var(--faint)}
+.abtn.is-active-prime{background:#fff2c2;border-color:#f0c14b;color:#8a5a00}
+.abtn.is-active-prime:hover{background:#fde68a;border-color:#e0ac00;color:#7a4a00}
+
+.toast{position:fixed;left:50%;bottom:28px;transform:translateX(-50%) translateY(20px);background:var(--ink);color:#fff;padding:11px 18px;border-radius:11px;font-size:13px;font-weight:600;box-shadow:var(--shadow-lg);opacity:0;pointer-events:none;transition:opacity .2s,transform .2s;z-index:200}
+.toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
+
+.modalbg{position:fixed;inset:0;background:rgba(15,23,42,.45);display:none;align-items:center;justify-content:center;z-index:150}
+.modalbg.show{display:flex}
+.modalbox{background:var(--surface);border-radius:16px;box-shadow:var(--shadow-lg);width:420px;max-width:92vw;padding:20px;max-height:80vh;overflow-y:auto}
+.modalbox h3{margin:0 0 4px;font-size:15px}
+.modalbox p{margin:0 0 14px;font-size:12.5px;color:var(--muted)}
+.swapopt{display:flex;align-items:center;gap:10px;padding:9px 10px;border:1px solid var(--border);border-radius:10px;margin-bottom:8px;cursor:pointer;font-size:12.5px}
+.swapopt:hover{border-color:var(--indigo-200);background:var(--indigo-50)}
+.swapopt input{margin:0}
+.modal-actions{display:flex;justify-content:flex-end;gap:8px;margin-top:14px}
+
+.pill{display:inline-flex;align-items:center;gap:5px;height:20px;padding:0 9px;border-radius:999px;font-size:10.5px;font-weight:700;white-space:nowrap}
+.pill .pdot{width:5px;height:5px;border-radius:50%;background:currentColor}
+.pill.st-pending{background:#eef1f7;color:#5b6474}
+.pill.st-spec{background:var(--sky-100,#dbeafe);color:#0369a1}
+.pill.st-dev{background:var(--indigo-50);color:var(--indigo-700)}
+.pill.st-blocked{background:var(--red-50);color:var(--red-700)}
+.pill.st-risk{background:var(--amber-100);color:var(--amber-700)}
+.pill.st-done{background:var(--emerald-50);color:var(--emerald-700)}
+.pill.st-canceled{background:#f1f5f9;color:#94a3b8}
+
+.emptyslot{border:1.5px dashed var(--border);border-radius:13px;padding:16px;text-align:center;color:var(--faint);font-size:12px;font-weight:600}
+
+.tsp{font-size:10px;font-weight:750;color:#7c5cff;background:#f2eeff;border-radius:6px;padding:1px 6px;margin-left:2px}
+.tsp.over{color:var(--red-700);background:var(--red-50)}
+
+.primeinfo{margin:8px 0 10px;padding:6px 10px;border-radius:9px;background:linear-gradient(120deg,#fff7e6,#fffdf5);border:1px solid #f4d68a;display:flex;align-items:center;gap:6px;font-size:11px;font-weight:650;color:#8a5a00}
+.primeinfo input[type=number]{width:42px;border:1px solid #f4d68a;border-radius:6px;padding:2px 5px;font:inherit;font-size:11px;text-align:center;color:#0f172a}
+
+.tcard.is-prime{border-color:#f0c14b;background:linear-gradient(180deg,#fffdf5,#fff)}
+.tcard.is-prime::before{background:linear-gradient(180deg,#f0b90b,#f0842a)}
+.primetag{display:inline-flex;align-items:center;gap:3px;font-size:10px;font-weight:750;color:#8a5a00;background:#fff2c2;border-radius:999px;padding:1px 8px;margin-left:4px}
+
+.splimitbox{display:flex;align-items:center;gap:6px;margin-top:10px;font-size:11px;color:var(--muted);font-weight:600}
+.splimitbox input{width:42px;border:1px solid var(--border);border-radius:6px;padding:2px 5px;font:inherit;font-size:11px;text-align:center}
+.primestatusline{margin-top:9px;font-size:11.5px;font-weight:700;color:#8a5a00;background:#fff7e0;border:1px solid #f4d68a;border-radius:8px;padding:6px 10px;display:inline-block}
+.primestatusline.none{color:var(--muted);background:#f1f3f9;border-color:var(--border)}
+
+.teambanner{position:relative;overflow:hidden;border-radius:20px;padding:20px 24px;color:#fff;background:linear-gradient(120deg,#5b21b6,#7c3aed,#c026d3,#db2777);background-size:300% 300%;animation:gradientShift 12s ease infinite;display:flex;gap:22px;align-items:center;box-shadow:0 12px 32px rgba(124,58,237,.30);margin-bottom:20px;flex-wrap:wrap;transition:filter .3s}
+.teambanner.levelup{animation:gradientShift 12s ease infinite, levelFlash .8s ease}
+.teambanner.milestone{animation:gradientShift 12s ease infinite, milestonePulse 1s ease}
+@keyframes gradientShift{0%{background-position:0% 50%}50%{background-position:100% 50%}100%{background-position:0% 50%}}
+@keyframes levelFlash{0%{filter:brightness(1)}25%{filter:brightness(1.7)}100%{filter:brightness(1)}}
+@keyframes milestonePulse{0%{transform:scale(1);filter:brightness(1)}20%{transform:scale(1.02);filter:brightness(1.9) saturate(1.4)}50%{transform:scale(1.01)}100%{transform:scale(1);filter:brightness(1)}}
+.tb-left{display:flex;gap:14px;align-items:center;flex:1.4 1 260px;min-width:240px}
+.tb-badge-icon{width:54px;height:54px;border-radius:50%;background:rgba(255,255,255,.16);display:grid;place-items:center;font-size:22px;position:relative;flex:0 0 auto;animation:pulseGlow 2.6s ease-in-out infinite}
+@keyframes pulseGlow{0%,100%{box-shadow:0 0 0 4px rgba(255,255,255,.14)}50%{box-shadow:0 0 0 9px rgba(255,255,255,.04)}}
+.tb-lvlnum{position:absolute;bottom:-3px;right:-3px;background:#fff;color:#7c3aed;font-size:10.5px;font-weight:800;width:19px;height:19px;border-radius:50%;display:grid;place-items:center;box-shadow:0 2px 5px rgba(0,0,0,.3)}
+.tb-title{font-size:13px;font-weight:800;display:flex;align-items:center;gap:6px}
+.tb-info{opacity:.85;font-size:10px;cursor:help;border:1px solid rgba(255,255,255,.6);border-radius:50%;width:14px;height:14px;display:inline-flex;align-items:center;justify-content:center;flex:0 0 auto}
+.tb-sub{font-size:12px;opacity:.92;margin-top:3px;font-weight:650}
+.tb-xpbar{height:7px;border-radius:99px;background:rgba(255,255,255,.25);margin-top:8px;overflow:hidden;width:100%;max-width:230px;position:relative}
+.tb-xpbar-fill{height:100%;border-radius:99px;background:#fff;transition:width .6s ease;position:relative;overflow:hidden}
+.tb-xpbar-fill::after{content:"";position:absolute;inset:0;background:linear-gradient(90deg,transparent,rgba(124,58,237,.35),transparent);animation:shimmer 2.2s linear infinite}
+@keyframes shimmer{0%{transform:translateX(-120%)}100%{transform:translateX(120%)}}
+.tb-hint{font-size:10px;opacity:.78;margin-top:7px;font-weight:500}
+.tb-next{font-size:10.5px;opacity:.95;margin-top:8px;font-weight:650;background:rgba(255,255,255,.14);border-radius:8px;padding:6px 10px;display:inline-block}
+.tb-leader{flex:1 1 190px;min-width:170px;padding:0 4px}
+.tb-leader-title{font-size:11px;font-weight:750;opacity:.92;margin-bottom:8px}
+.tb-leader-list{display:flex;flex-direction:column;gap:5px}
+.tb-leader-row{display:flex;align-items:center;gap:8px;font-size:11.5px;font-weight:650;background:rgba(255,255,255,.10);border-radius:8px;padding:5px 9px}
+.tb-leader-row.is-us{background:rgba(255,255,255,.28);box-shadow:0 0 0 1.5px rgba(255,255,255,.5) inset}
+.tb-you{opacity:.75;font-weight:600;font-size:10px}
+.tb-rank{width:16px;text-align:center;font-size:12px}
+.tb-lname{flex:1}
+.tb-lxp{opacity:.85;font-variant-numeric:tabular-nums;font-size:11px}
+.tb-mid{display:flex;align-items:center;gap:10px;flex:0 0 auto;padding:6px 20px;border-left:1px solid rgba(255,255,255,.25);border-right:1px solid rgba(255,255,255,.25)}
+.tb-flame{font-size:26px;display:inline-block;animation:flicker 1.7s ease-in-out infinite}
+@keyframes flicker{0%,100%{transform:scale(1) rotate(-3deg)}50%{transform:scale(1.14) rotate(3deg)}}
+.tb-streak-num{font-size:22px;font-weight:800;line-height:1}
+.tb-streak-label{font-size:10px;opacity:.9;font-weight:650;line-height:1.35;margin-top:2px}
+.tb-tiny{opacity:.72;font-weight:500}
+.tb-right{flex:1.2 1 240px;min-width:220px}
+.tb-badges-title{font-size:11px;font-weight:750;opacity:.92;margin-bottom:9px}
+.tb-badges-title span{opacity:.85;font-weight:700}
+.tb-badgegrid{display:flex;gap:11px;flex-wrap:wrap}
+.tb-badge{display:flex;flex-direction:column;align-items:center;gap:5px;width:58px;opacity:.42;transition:opacity .3s;cursor:default}
+.tb-badge.unlocked{opacity:1}
+.tb-badge-ic{width:36px;height:36px;border-radius:11px;background:rgba(255,255,255,.16);display:grid;place-items:center;font-size:16px;transition:transform .2s}
+.tb-badge.unlocked .tb-badge-ic{background:#fff;box-shadow:0 3px 10px rgba(0,0,0,.22)}
+.tb-badge:hover .tb-badge-ic{transform:scale(1.14) rotate(-5deg)}
+.tb-badge-name{font-size:9px;font-weight:750;text-align:center;line-height:1.25}
+.floatxp{position:fixed;font-weight:800;font-size:15px;color:#7c3aed;pointer-events:none;z-index:300;transition:transform 1s ease, opacity 1s ease}
+.floatxp.neg{color:#dc2626}
+.tb-xpbar-fill.losing{background:#fca5a5}
+.teambanner.leveldown{animation:gradientShift 12s ease infinite, levelDrop .8s ease}
+@keyframes levelDrop{0%{filter:brightness(1) saturate(1)}30%{filter:brightness(.75) saturate(.6)}100%{filter:brightness(1) saturate(1)}}
+
+.devwrap{position:relative}
+
+.sechead{display:flex;align-items:center;gap:12px;margin:28px 0 14px}
+.sechead .sh-ic{width:30px;height:30px;border-radius:9px;display:grid;place-items:center;background:var(--indigo-50);color:var(--indigo-600);flex:0 0 auto}
+.sechead h2{font-size:15px;margin:0;font-weight:700;letter-spacing:-.015em}
+.sechead .hint{margin-left:auto;font-size:12px;color:var(--faint);font-weight:500}
+
+.logcard{background:var(--surface);border:1px solid var(--border);border-radius:16px;box-shadow:var(--shadow-sm);overflow:hidden}
+table{width:100%;border-collapse:collapse;font-size:12.5px}
+thead th{text-align:left;font-size:10.5px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.03em;padding:11px 15px;background:#fafbfd;border-bottom:1px solid var(--border)}
+tbody td{padding:11px 15px;border-bottom:1px solid var(--hair);vertical-align:middle}
+tbody tr:last-child td{border-bottom:0}
+.swaptag{display:inline-flex;align-items:center;gap:6px;font-size:12px;font-weight:600}
+.arrow{color:var(--faint)}
+.out{color:var(--red-700);font-weight:700}
+.in{color:var(--emerald-700);font-weight:700}
+</style></head><body>
+<div class="wrap">
+
+<div class="topbar">
+  <div class="topbar-accent"></div>
+  <div class="topbar-inner">
+    <div class="tb-row">
+      <div class="brand">
+        <div class="brandmark">
+          <span class="wordmark">maids.cc</span>
+          <span class="divtag">AI &amp; Tech Division</span>
+        </div>
+        <div class="brandsep"></div>
+        <div>
+          <h1>Task Reservoir</h1>
+          <div class="subline">Business backlog → Speccing → Development · live view</div>
+        </div>
+      </div>
+      <div class="snapshot"><span class="live"></span> Updated 2 min ago · Aug 12, 2026 · <b id="build-tag" style="opacity:.6">build v20-103650</b></div>
+    </div>
+  </div>
+</div>
+
+<div class="teambanner" id="teambanner">
+  <div class="tb-left">
+    <div class="tb-badge-icon">🏆<span class="tb-lvlnum" id="glevel-num">7</span></div>
+    <div>
+      <div class="tb-title">AI &amp; Tech Team Progress <span class="tb-info" title="Each team tracks its own XP and level independently — not a shared company pool. This is a fun way to build momentum, not a real business metric.">ⓘ</span></div>
+      <div class="tb-sub">Level <b id="glevel-num2">7</b> · <span id="gxp-val">1240</span>/<span id="gxp-max">1500</span> XP</div>
+      <div class="tb-xpbar"><div class="tb-xpbar-fill" id="xpbar-fill" style="width:82%"></div></div>
+      <div class="tb-hint">Finishing work pays most: +50 XP per task done (Prime or not) · everything else earns 5–15 · streak milestones (10, 25, 50, 100) give big bonus XP</div>
+      <div class="tb-next">🎯 <b id="xp-needed">260</b> XP to Level <b id="next-level-num">8</b> · slowing down costs XP — stay consistent to hold your level</div>
+    </div>
+  </div>
+  <div class="tb-mid">
+    <span class="tb-flame">🔥</span>
+    <div>
+      <div class="tb-streak-num" id="streak-val">5</div>
+      <div class="tb-streak-label">task streak<br><span class="tb-tiny">completed in a row, no cancels</span></div>
+    </div>
+  </div>
+  <div class="tb-leader">
+    <div class="tb-leader-title">🏁 Team Leaderboard <span class="tb-tiny">each team's own level progress</span></div>
+    <div class="tb-leader-list" id="leaderboard"></div>
+  </div>
+  <div class="tb-right">
+    <div class="tb-badges-title">Achievements <span id="badge-count">3/4</span> earned</div>
+    <div class="tb-badgegrid" id="badgerow">
+      <div class="tb-badge unlocked" data-badge="closer" title="Mark 5 tasks done">
+        <div class="tb-badge-ic">✅</div><div class="tb-badge-name">Closer</div>
+      </div>
+      <div class="tb-badge unlocked" data-badge="swapper" title="Complete a 1-for-1 swap">
+        <div class="tb-badge-ic">⇄</div><div class="tb-badge-name">Fair Swapper</div>
+      </div>
+      <div class="tb-badge" data-badge="speed" title="Promote 3 tasks in a row">
+        <div class="tb-badge-ic">🚀</div><div class="tb-badge-name">Speed Promoter</div>
+      </div>
+      <div class="tb-badge unlocked" data-badge="prime" title="Activate a Prime Task">
+        <div class="tb-badge-ic">⭐</div><div class="tb-badge-name">Prime Master</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="board">
+
+  <!-- TIER 1: BUSINESS BACKLOG -->
+  <div class="col">
+    <div class="col-head">
+      <div class="col-tier">Tier 1</div>
+      <div class="col-title">Business backlog</div>
+      <div class="col-desc">Owned by the module BA. Development takes no action here.</div>
+      <div class="col-kpi">
+        <div class="kpi-ic kpi-indigo">◧</div>
+        <div class="kpi-main">
+          <div class="kpi-val" id="stat-bizcount">34</div>
+          <div class="kpi-label">tasks in backlog</div>
+        </div>
+        <div class="kpi-flag" id="stale-flag"><span id="stat-stale">6</span> stale</div>
+      </div>
+    </div>
+    <div class="col-body" id="body-business">
+      <div class="tcard age-fresh" data-key="OSP-241" data-sp="8">
+        <div class="tc-top"><span class="tkey">OSP-241</span><span class="tsize">M</span></div>
+        <div class="tc-title">Add rejection reason field to termination approvals</div>
+        <div class="tc-status"><span class="pill st-pending"><span class="pdot"></span>To Do</span></div>
+        <div class="tc-meta"><span class="owner"><span class="avatar">MK</span>Mario</span><span class="agebadge">4 days</span></div>
+        <div class="tc-actions"><button class="abtn primary" data-action="move-speccing">Move to speccing</button><button class="abtn" data-action="refine">Refine</button><button class="abtn danger" data-action="cancel">Cancel</button></div>
+      </div>
+      <div class="tcard age-fresh" data-key="DPR-118" data-sp="5">
+        <div class="tc-top"><span class="tkey">DPR-118</span><span class="tsize">S</span></div>
+        <div class="tc-title">Bugs view: link root cause field to Jira custom field</div>
+        <div class="tc-status"><span class="pill st-pending"><span class="pdot"></span>To Do</span></div>
+        <div class="tc-meta"><span class="owner"><span class="avatar">AM</span>Ahmad</span><span class="agebadge">9 days</span></div>
+        <div class="tc-actions"><button class="abtn primary" data-action="move-speccing">Move to speccing</button><button class="abtn" data-action="refine">Refine</button><button class="abtn danger" data-action="cancel">Cancel</button></div>
+      </div>
+      <div class="tcard age-warn" data-key="CHT-076" data-sp="34">
+        <div class="tc-top"><span class="tkey">CHT-076</span><span class="tsize">L</span></div>
+        <div class="tc-title">Per-manager access control for WhatsApp viewer</div>
+        <div class="tc-status"><span class="pill st-blocked"><span class="pdot"></span>Blocked by BA</span></div>
+        <div class="tc-meta"><span class="owner"><span class="avatar">OY</span>Omar</span><span class="agebadge">31 days</span></div>
+        <div class="tc-actions"><button class="abtn primary" data-action="move-speccing">Move to speccing</button><button class="abtn" data-action="refine">Refine</button><button class="abtn danger" data-action="cancel">Cancel</button></div>
+      </div>
+      <div class="tcard age-stale" data-key="SAL-053" data-sp="13">
+        <div class="tc-top"><span class="tkey">SAL-053</span><span class="tsize">M</span></div>
+        <div class="tc-title">Aggregate-only salary view for PTC dept</div>
+        <div class="tc-status"><span class="pill st-blocked"><span class="pdot"></span>Blocked by BA</span></div>
+        <div class="tc-meta"><span class="owner"><span class="avatar">MK</span>Mario</span><span class="agebadge">58 days · stale</span></div>
+        <div class="tc-actions"><button class="abtn primary" data-action="confirm-valid">Confirm still valid</button><button class="abtn danger" data-action="cancel">Cancel</button></div>
+      </div>
+      <div class="tcard age-fresh" data-key="OSP-244" data-sp="3">
+        <div class="tc-top"><span class="tkey">OSP-244</span><span class="tsize">S</span></div>
+        <div class="tc-title">Read-only new-hire table filter by department</div>
+        <div class="tc-status"><span class="pill st-pending"><span class="pdot"></span>To Do</span></div>
+        <div class="tc-meta"><span class="owner"><span class="avatar">AM</span>Ahmad</span><span class="agebadge">2 days</span></div>
+        <div class="tc-actions"><button class="abtn primary" data-action="move-speccing">Move to speccing</button><button class="abtn" data-action="refine">Refine</button><button class="abtn danger" data-action="cancel">Cancel</button></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- TIER 2: SPECCING BACKLOG -->
+  <div class="col">
+    <div class="col-head">
+      <div class="col-tier">Tier 2</div>
+      <div class="col-title">Speccing backlog</div>
+      <div class="col-desc">Technical requirements ready. Waiting for a development slot.</div>
+      <div class="col-kpi">
+        <div class="kpi-ic kpi-indigo">◨</div>
+        <div class="kpi-main">
+          <div class="kpi-val" id="stat-speccount">12</div>
+          <div class="kpi-label">ready to promote</div>
+        </div>
+      </div>
+    </div>
+    <div class="col-body" id="body-speccing">
+      <div class="tcard age-fresh" data-key="DPR-114" data-sp="13">
+        <div class="tc-top"><span class="tkey">DPR-114</span><span class="tsize">M</span></div>
+        <div class="tc-title">Collapsible project panel — persist state per user</div>
+        <div class="tc-status"><span class="pill st-spec"><span class="pdot"></span>In Speccing</span></div>
+        <div class="tc-meta"><span class="owner"><span class="avatar">RY</span>Rayan</span><span class="agebadge">5 days</span></div>
+        <div class="tc-actions"><button class="abtn primary" data-action="promote">Promote</button><button class="abtn" data-action="send-back-ba">Send back to BA</button></div>
+      </div>
+      <div class="tcard age-warn" data-key="OSP-239" data-sp="21">
+        <div class="tc-top"><span class="tkey">OSP-239</span><span class="tsize">L</span></div>
+        <div class="tc-title">Raises table: bulk approve with audit trail</div>
+        <div class="tc-status"><span class="pill st-spec"><span class="pdot"></span>In Speccing</span></div>
+        <div class="tc-meta"><span class="owner"><span class="avatar">MK</span>Mario</span><span class="agebadge">26 days</span></div>
+        <div class="tc-actions"><button class="abtn primary" data-action="promote">Promote</button><button class="abtn" data-action="send-back-ba">Send back to BA</button></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- TIER 3: DEVELOPMENT TOP 10 -->
+  <div class="col devwrap">
+    <div class="col-head">
+      <div class="col-tier">Tier 3</div>
+      <div class="col-title">Development · Top 10</div>
+      <div class="col-desc">The only tasks development can work on. Highest available task only.</div>
+      <div class="col-kpi">
+        <div class="kpi-ic kpi-red">10</div>
+        <div class="kpi-main">
+          <div class="kpi-val" id="stat-devfilled">6/10</div>
+          <div class="kpi-label">dev slots filled</div>
+        </div>
+        <div class="kpi-flag" id="devopen-flag"><span id="stat-devopen">4</span> open</div>
+      </div>
+      <div class="gauge"><div class="gauge-fill" id="gauge-dev" style="width:60%"></div></div>
+      <div class="kpi-note">⇄ <b id="stat-swaps">3</b> swaps this week · 1-for-1, logged</div>
+      <div class="splimitbox">Prime Task SP limit: <input type="number" id="sp-limit-input" value="25" min="1"> <span>(editable by PM)</span></div>
+      <div class="primestatusline">👑 Current Prime Task: <b id="current-prime-label">DPR-108</b></div>
+    </div>
+    <div class="col-body" id="body-dev">
+      <div class="tcard age-fresh is-prime" data-key="DPR-108" data-devdays="2" data-sp="13">
+        <div class="tc-top"><span class="slotnum">1</span><span class="tkey">DPR-108</span><span class="tsize">M</span><span class="primetag">👑 PRIME</span></div>
+        <div class="tc-title">DPR dashboard: wire live Jira data to top-10 view</div>
+        <div class="tc-status"><span class="pill st-dev"><span class="pdot"></span>In Development</span></div>
+        <div class="primeinfo">👑 Shares top priority with slot 1 · Developer time reserved: <input type="number" class="prime-capacity-input" value="50" min="1" max="100">%</div>
+        <div class="tc-meta"><span class="owner"><span class="avatar">RY</span>Rayan</span><span class="agebadge">in dev</span></div>
+        <div class="tc-actions"><button class="abtn primary" data-action="mark-done">Mark done</button><button class="abtn" data-action="make-prime"><span class="btxt">Make Prime ★</span></button><button class="abtn ghost" data-action="send-back-spec">Send back to speccing</button></div>
+      </div>
+      <div class="tcard age-fresh" data-key="OSP-231" data-devdays="1" data-sp="5">
+        <div class="tc-top"><span class="slotnum">2</span><span class="tkey">OSP-231</span><span class="tsize">S</span></div>
+        <div class="tc-title">Remove PIL approval step from onboarding flow</div>
+        <div class="tc-status"><span class="pill st-dev"><span class="pdot"></span>In Development</span></div>
+        <div class="tc-meta"><span class="owner"><span class="avatar">AM</span>Ahmad</span><span class="agebadge">in dev</span></div>
+        <div class="tc-actions"><button class="abtn primary" data-action="mark-done">Mark done</button><button class="abtn" data-action="make-prime"><span class="btxt">Make Prime ★</span></button><button class="abtn ghost" data-action="send-back-spec">Send back to speccing</button></div>
+      </div>
+      <div class="tcard age-warn" data-key="CHT-071" data-devdays="6" data-sp="30">
+        <div class="tc-top"><span class="slotnum">3</span><span class="tkey">CHT-071</span><span class="tsize">L</span></div>
+        <div class="tc-title">Bubble-flipped conversation viewer — read receipts</div>
+        <div class="tc-status"><span class="pill st-risk"><span class="pdot"></span>At Risk</span></div>
+        <div class="tc-meta"><span class="owner"><span class="avatar">OY</span>Omar</span><span class="agebadge">3 days</span></div>
+        <div class="tc-actions"><button class="abtn primary" data-action="mark-done">Mark done</button><button class="abtn" data-action="make-prime"><span class="btxt">Make Prime ★</span></button><button class="abtn ghost" data-action="send-back-spec">Send back to speccing</button></div>
+      </div>
+      <div class="tcard age-fresh" data-key="SAL-049" data-devdays="3" data-sp="20">
+        <div class="tc-top"><span class="slotnum">4</span><span class="tkey">SAL-049</span><span class="tsize">M</span></div>
+        <div class="tc-title">IMC middleware — aggregate salary endpoint</div>
+        <div class="tc-status"><span class="pill st-dev"><span class="pdot"></span>In Development</span></div>
+        <div class="tc-meta"><span class="owner"><span class="avatar">MK</span>Mario</span><span class="agebadge">in dev</span></div>
+        <div class="tc-actions"><button class="abtn primary" data-action="mark-done">Mark done</button><button class="abtn" data-action="make-prime"><span class="btxt">Make Prime ★</span></button><button class="abtn ghost" data-action="send-back-spec">Send back to speccing</button></div>
+      </div>
+      <div class="tcard age-fresh" data-key="DPR-110" data-devdays="1" data-sp="3">
+        <div class="tc-top"><span class="slotnum">5</span><span class="tkey">DPR-110</span><span class="tsize">S</span></div>
+        <div class="tc-title">Restyle stat strip — single accent color</div>
+        <div class="tc-status"><span class="pill st-dev"><span class="pdot"></span>In Development</span></div>
+        <div class="tc-meta"><span class="owner"><span class="avatar">RY</span>Rayan</span><span class="agebadge">in dev</span></div>
+        <div class="tc-actions"><button class="abtn primary" data-action="mark-done">Mark done</button><button class="abtn" data-action="make-prime"><span class="btxt">Make Prime ★</span></button><button class="abtn ghost" data-action="send-back-spec">Send back to speccing</button></div>
+      </div>
+      <div class="tcard age-fresh" data-key="OSP-235" data-devdays="2" data-sp="8">
+        <div class="tc-top"><span class="slotnum">6</span><span class="tkey">OSP-235</span><span class="tsize">M</span></div>
+        <div class="tc-title">Separate approval table per request type</div>
+        <div class="tc-status"><span class="pill st-dev"><span class="pdot"></span>In Development</span></div>
+        <div class="tc-meta"><span class="owner"><span class="avatar">AM</span>Ahmad</span><span class="agebadge">in dev</span></div>
+        <div class="tc-actions"><button class="abtn primary" data-action="mark-done">Mark done</button><button class="abtn" data-action="make-prime"><span class="btxt">Make Prime ★</span></button><button class="abtn ghost" data-action="send-back-spec">Send back to speccing</button></div>
+      </div>
+      <div class="emptyslot" id="emptyslot-dev">4 open slots — next promoted automatically from Speccing</div>
+    </div>
+  </div>
+
+</div>
+
+<div class="sechead"><div class="sh-ic">⇄</div><h2>Swap log</h2><span class="hint">Every promotion outside auto-fill is recorded</span></div>
+<div class="logcard">
+  <table>
+    <thead><tr><th>When</th><th>Requested by</th><th>Swap</th><th>Reason</th></tr></thead>
+    <tbody id="swaplog-body">
+      <tr><td>Aug 11, 14:20</td><td>Mario (PIL)</td><td class="swaptag"><span class="out">OSP-228 out</span><span class="arrow">→</span><span class="in">CHT-071 in</span></td><td>Client escalation, dev slot</td></tr>
+      <tr><td>Aug 9, 09:05</td><td>Omar (PIL)</td><td class="swaptag"><span class="out">DPR-105 out</span><span class="arrow">→</span><span class="in">DPR-110 in</span></td><td>Design approved, ready sooner</td></tr>
+      <tr><td>Aug 6, 17:40</td><td>Ahmad (PIL)</td><td class="swaptag"><span class="out">SAL-041 out</span><span class="arrow">→</span><span class="in">SAL-049 in</span></td><td>Blocking PTC month-end close</td></tr>
+    </tbody>
+  </table>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<div class="modalbg" id="swap-modal">
+  <div class="modalbox">
+    <h3>Dev queue is full</h3>
+    <p id="swap-modal-desc">Pick a task currently in development to swap out for the promoted task.</p>
+    <div id="swap-options"></div>
+    <div class="modal-actions">
+      <button class="abtn" id="swap-cancel">Cancel</button>
+      <button class="abtn primary" id="swap-confirm">Confirm swap</button>
+    </div>
+  </div>
+</div>
+
+</div>
+<script>
+var DEV_CAP = 10;
+var primeKey = 'DPR-108';
+var primeSPLimit = 25;
+var promoteStreak = 0;
+var doneCount = 0;
+var GAME = { xp: 1240, xpMax: 1500, level: 7, streak: 5 };
+var STREAK_MILESTONES = [
+  {count: 10, bonus: 100},
+  {count: 25, bonus: 300},
+  {count: 50, bonus: 750},
+  {count: 100, bonus: 2000}
+];
+var unlocked = {closer:true, swapper:true, prime:true};
+var bodyBiz = document.getElementById('body-business');
+var bodySpec = document.getElementById('body-speccing');
+var bodyDev = document.getElementById('body-dev');
+var pendingPromoteCard = null;
+
+function toast(msg){
+  var t = document.getElementById('toast');
+  t.textContent = msg;
+  t.classList.add('show');
+  clearTimeout(t._h);
+  t._h = setTimeout(function(){ t.classList.remove('show'); }, 2600);
+}
+
+function setStatus(card, cls, label){
+  var s = card.querySelector('.tc-status');
+  s.innerHTML = '<span class="pill '+cls+'"><span class="pdot"></span>'+label+'</span>';
+}
+
+function renumberDev(){
+  var cards = bodyDev.querySelectorAll('.tcard');
+  cards.forEach(function(c, i){
+    var num = c.querySelector('.slotnum');
+    if(num) num.textContent = i+1;
+  });
+}
+
+function refreshCounts(){
+  var bizN = bodyBiz.querySelectorAll('.tcard').length;
+  var specN = bodySpec.querySelectorAll('.tcard').length;
+  var devN = bodyDev.querySelectorAll('.tcard').length;
+  var staleN = bodyBiz.querySelectorAll('.tcard.age-stale').length;
+  var openN = DEV_CAP - devN;
+
+  document.getElementById('stat-bizcount').textContent = bizN;
+  document.getElementById('stat-speccount').textContent = specN;
+  document.getElementById('stat-devfilled').textContent = devN + '/' + DEV_CAP;
+  document.getElementById('stat-devopen').textContent = openN;
+  document.getElementById('stat-stale').textContent = staleN;
+
+  var staleFlag = document.getElementById('stale-flag');
+  staleFlag.style.display = staleN > 0 ? '' : 'none';
+
+  var devFlag = document.getElementById('devopen-flag');
+  devFlag.classList.toggle('full', openN === 0);
+  devFlag.classList.toggle('ok', openN > 0);
+
+  var gauge = document.getElementById('gauge-dev');
+  gauge.style.width = Math.min(100, (devN/DEV_CAP)*100) + '%';
+  gauge.classList.toggle('warn', devN >= DEV_CAP);
+
+  var empty = document.getElementById('emptyslot-dev');
+  if(openN > 0){
+    empty.style.display = '';
+    empty.textContent = openN + ' open slot' + (openN===1?'':'s') + ' — next promoted automatically from Speccing';
+  } else {
+    empty.style.display = 'none';
+  }
+  renumberDev();
+}
+
+function logSwap(outKey, inKey, reason){
+  var tbody = document.getElementById('swaplog-body');
+  var now = new Date();
+  var when = now.toLocaleDateString('en-US',{month:'short',day:'numeric'}) + ', ' +
+             now.toLocaleTimeString('en-US',{hour:'2-digit',minute:'2-digit',hour12:false});
+  var tr = document.createElement('tr');
+  tr.innerHTML = '<td>'+when+'</td><td>You (PIL)</td>'+
+    '<td class="swaptag"><span class="out">'+outKey+' out</span><span class="arrow">→</span><span class="in">'+inKey+' in</span></td>'+
+    '<td>'+reason+'</td>';
+  tbody.insertBefore(tr, tbody.firstChild);
+  var swapsEl = document.getElementById('stat-swaps');
+  swapsEl.textContent = (parseInt(swapsEl.textContent,10)||0) + 1;
+}
+
+function makeBizActions(){
+  var wrap = document.createElement('div');
+  wrap.className = 'tc-actions';
+  wrap.innerHTML = '<button class="abtn primary" data-action="move-speccing">Move to speccing</button>'+
+    '<button class="abtn" data-action="refine">Refine</button>'+
+    '<button class="abtn danger" data-action="cancel">Cancel</button>';
+  return wrap;
+}
+function makeSpecActions(){
+  var wrap = document.createElement('div');
+  wrap.className = 'tc-actions';
+  wrap.innerHTML = '<button class="abtn primary" data-action="promote">Promote</button>'+
+    '<button class="abtn" data-action="send-back-ba">Send back to BA</button>';
+  return wrap;
+}
+function makeDevActions(){
+  var wrap = document.createElement('div');
+  wrap.className = 'tc-actions';
+  wrap.innerHTML = '<button class="abtn primary" data-action="mark-done">Mark done</button>'+
+    '<button class="abtn" data-action="make-prime"><span class="btxt">Make Prime ★</span></button>'+
+    '<button class="abtn ghost" data-action="send-back-spec">Send back to speccing</button>';
+  return wrap;
+}
+
+function moveCard(card, targetBody, actionsFactory, ageClass, flashType){
+  var actions = card.querySelector('.tc-actions');
+  if(actions) actions.remove();
+  if(ageClass){
+    card.classList.remove('age-fresh','age-warn','age-stale');
+    card.classList.add(ageClass);
+  }
+  var slot = card.querySelector('.slotnum');
+  if(slot) slot.remove();
+  card.appendChild(actionsFactory());
+  targetBody.appendChild(card);
+  iconize();
+  renderSP();
+  if(targetBody === bodyDev){
+    syncPrimeButtons();
+    enforcePrimePosition();
+  }
+  playCardTransition(card, flashType);
+}
+function playCardTransition(card, flashType){
+  card.classList.remove('card-pop','flash-up','flash-down');
+  void card.offsetWidth;
+  card.classList.add('card-pop');
+  if(flashType === 'up') card.classList.add('flash-up');
+  else if(flashType === 'down') card.classList.add('flash-down');
+  setTimeout(function(){ card.classList.remove('card-pop','flash-up','flash-down'); }, 650);
+}
+
+function autoPromoteFromSpeccing(){
+  var next = bodySpec.querySelector('.tcard');
+  if(!next){
+    toast('Slot freed — nothing waiting in Speccing');
+    refreshCounts();
+    return;
+  }
+  var key = next.getAttribute('data-key');
+  setStatus(next, 'st-dev', 'In Development');
+  var num = document.createElement('span');
+  num.className = 'slotnum';
+  var top = next.querySelector('.tc-top');
+  top.insertBefore(num, top.firstChild);
+  var age = next.querySelector('.agebadge');
+  if(age) age.textContent = 'in dev';
+  moveCard(next, bodyDev, makeDevActions, null, 'up');
+  refreshCounts();
+  toast(key + ' auto-promoted to Development');
+}
+
+function openSwapModal(card){
+  pendingPromoteCard = card;
+  var opts = document.getElementById('swap-options');
+  opts.innerHTML = '';
+  bodyDev.querySelectorAll('.tcard').forEach(function(c){
+    var key = c.getAttribute('data-key');
+    var title = c.querySelector('.tc-title').textContent;
+    var label = document.createElement('label');
+    label.className = 'swapopt';
+    label.innerHTML = '<input type="radio" name="swapout" value="'+key+'"><span><b>'+key+'</b> — '+title+'</span>';
+    opts.appendChild(label);
+  });
+  document.getElementById('swap-modal-desc').textContent =
+    'Development is at ' + DEV_CAP + '/' + DEV_CAP + '. Promoting ' + card.getAttribute('data-key') + ' means demoting one task back to Speccing (1-for-1).';
+  document.getElementById('swap-modal').classList.add('show');
+}
+function closeSwapModal(){
+  document.getElementById('swap-modal').classList.remove('show');
+  pendingPromoteCard = null;
+}
+document.getElementById('swap-cancel').addEventListener('click', closeSwapModal);
+document.getElementById('swap-modal').addEventListener('click', function(e){
+  if(e.target === this) closeSwapModal();
+});
+document.getElementById('swap-confirm').addEventListener('click', function(){
+  var checked = document.querySelector('input[name="swapout"]:checked');
+  if(!checked){ toast('Pick a task to swap out first'); return; }
+  var swapBtnRect = this.getBoundingClientRect();
+  var outKey = checked.value;
+  var outCard = Array.prototype.find.call(bodyDev.querySelectorAll('.tcard'), function(c){
+    return c.getAttribute('data-key') === outKey;
+  });
+  var inCard = pendingPromoteCard;
+  if(!outCard || !inCard) return;
+
+  if(outKey === primeKey) clearPrime(false);
+
+  setStatus(outCard, 'st-spec', 'In Speccing');
+  var age1 = outCard.querySelector('.agebadge'); if(age1) age1.textContent = '0 days';
+  moveCard(outCard, bodySpec, makeSpecActions, null, 'down');
+
+  setStatus(inCard, 'st-dev', 'In Development');
+  var num = document.createElement('span');
+  num.className = 'slotnum';
+  inCard.querySelector('.tc-top').insertBefore(num, inCard.querySelector('.tc-top').firstChild);
+  var age2 = inCard.querySelector('.agebadge'); if(age2) age2.textContent = 'in dev';
+  moveCard(inCard, bodyDev, makeDevActions, null, 'up');
+
+  logSwap(outKey, inCard.getAttribute('data-key'), 'Manual swap via Promote');
+  refreshCounts();
+  unlockBadge('swapper');
+  awardXP(10, swapBtnRect);
+  closeSwapModal();
+  toast('Swapped ' + outKey + ' for ' + inCard.getAttribute('data-key') + ' (+10 XP)');
+});
+
+document.addEventListener('click', function(e){
+  var btn = e.target.closest('button[data-action]');
+  if(!btn) return;
+  var card = btn.closest('.tcard');
+  if(!card) return;
+  var key = card.getAttribute('data-key');
+  var action = btn.getAttribute('data-action');
+  var btnRect = btn.getBoundingClientRect();
+
+  if(action === 'move-speccing'){
+    setStatus(card, 'st-spec', 'In Speccing');
+    moveCard(card, bodySpec, makeSpecActions, null, 'up');
+    refreshCounts();
+    awardXP(5, btnRect);
+    toast(key + ' moved to Speccing (+5 XP)');
+  }
+  else if(action === 'refine'){
+    awardXP(5, btnRect);
+    toast(key + ' — requirements refined by BA (+5 XP)');
+  }
+  else if(action === 'cancel'){
+    card.style.opacity = '0';
+    card.style.transform = 'scale(.96)';
+    setTimeout(function(){ card.remove(); refreshCounts(); }, 150);
+    GAME.streak = 0;
+    document.getElementById('streak-val').textContent = 0;
+    awardXP(-15, btnRect);
+    toast(key + ' cancelled — streak reset (-15 XP)');
+  }
+  else if(action === 'confirm-valid'){
+    card.classList.remove('age-stale');
+    card.classList.add('age-fresh');
+    var age = card.querySelector('.agebadge');
+    if(age) age.textContent = '0 days';
+    refreshCounts();
+    awardXP(5, btnRect);
+    toast(key + ' confirmed still valid — age reset (+5 XP)');
+  }
+  else if(action === 'send-back-ba'){
+    setStatus(card, 'st-pending', 'To Do');
+    moveCard(card, bodyBiz, makeBizActions, 'age-fresh', 'down');
+    refreshCounts();
+    toast(key + ' sent back to BA');
+  }
+  else if(action === 'promote'){
+    var devN = bodyDev.querySelectorAll('.tcard').length;
+    if(devN >= DEV_CAP){
+      openSwapModal(card);
+      return;
+    }
+    setStatus(card, 'st-dev', 'In Development');
+    var num = document.createElement('span');
+    num.className = 'slotnum';
+    card.querySelector('.tc-top').insertBefore(num, card.querySelector('.tc-top').firstChild);
+    var age = card.querySelector('.agebadge');
+    if(age) age.textContent = 'in dev';
+    moveCard(card, bodyDev, makeDevActions, null, 'up');
+    refreshCounts();
+    promoteStreak++;
+    if(promoteStreak >= 3) unlockBadge('speed');
+    awardXP(10, btnRect);
+    toast(key + ' promoted to Development (+10 XP)');
+  }
+  else if(action === 'make-prime'){
+    if(key === primeKey){
+      clearPrime(true);
+      return;
+    }
+    var sp = parseInt(card.getAttribute('data-sp'), 10) || 0;
+    if(primeKey){
+      toast('Rejected — A Prime Task already exists. Remove it from its card first.');
+      return;
+    }
+    if(sp > primeSPLimit){
+      toast('Rejected — Task exceeds the SP limit (' + primeSPLimit + ' SP).');
+      return;
+    }
+    setPrime(card);
+    unlockBadge('prime');
+    awardXP(15, btnRect);
+    toast(key + ' set as Prime Task — shares top priority with slot 1 (+15 XP)');
+  }
+  else if(action === 'mark-done'){
+    var wasPrime = (key === primeKey);
+    card.style.opacity = '0';
+    card.style.transform = 'scale(.96)';
+    setTimeout(function(){
+      card.remove();
+      autoPromoteFromSpeccing();
+      doneCount++;
+      GAME.streak++;
+      awardXP(50, btnRect);
+      if(doneCount >= 5) unlockBadge('closer');
+      if(wasPrime){
+        clearPrime(false);
+        toast(key + ' (Prime) done — full capacity returned to main task (+50 XP)');
+      } else {
+        toast(key + ' marked done (+50 XP)');
+      }
+      checkStreakMilestone();
+    }, 150);
+  }
+  else if(action === 'send-back-spec'){
+    if(key === primeKey) clearPrime(false);
+    setStatus(card, 'st-spec', 'In Speccing');
+    var age = card.querySelector('.agebadge');
+    if(age) age.textContent = '0 days';
+    moveCard(card, bodySpec, makeSpecActions, 'age-fresh', 'down');
+    refreshCounts();
+    toast(key + ' sent back to Speccing');
+  }
+});
+
+refreshCounts();
+
+var ICONS = {
+  'move-speccing': '<path d="M3 8h9M8 4l4 4-4 4" stroke="currentColor" stroke-width="1.6" fill="none" stroke-linecap="round" stroke-linejoin="round"/>',
+  'refine':        '<path d="M10.3 2.7l3 3L5 14l-3.6.6L2 11z" stroke="currentColor" stroke-width="1.4" fill="none" stroke-linejoin="round"/>',
+  'cancel':        '<path d="M4 4l8 8M12 4l-8 8" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/>',
+  'confirm-valid': '<path d="M3 8.5l3.2 3.2L13 4.6" stroke="currentColor" stroke-width="1.8" fill="none" stroke-linecap="round" stroke-linejoin="round"/>',
+  'send-back-ba':  '<path d="M13 8H4M7 4L3 8l4 4" stroke="currentColor" stroke-width="1.6" fill="none" stroke-linecap="round" stroke-linejoin="round"/>',
+  'send-back-spec':'<path d="M13 8H4M7 4L3 8l4 4" stroke="currentColor" stroke-width="1.6" fill="none" stroke-linecap="round" stroke-linejoin="round"/>',
+  'mark-done':     '<circle cx="8" cy="8" r="6.3" stroke="currentColor" stroke-width="1.4" fill="none"/><path d="M5.3 8.2l1.9 1.9 3.5-4" stroke="currentColor" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/>'
+};
+function iconize(){
+  document.querySelectorAll('button[data-action]').forEach(function(btn){
+    var key = btn.getAttribute('data-action');
+    if(ICONS[key] && !btn.querySelector('svg')){
+      var span = document.createElement('span');
+      span.innerHTML = '<svg viewBox="0 0 16 16" aria-hidden="true">'+ICONS[key]+'</svg>';
+      btn.insertBefore(span.firstChild, btn.firstChild);
+    }
+  });
+}
+function setPrime(card){
+  if(primeKey && primeKey !== card.getAttribute('data-key')){
+    var old = bodyDev.querySelector('[data-key="'+primeKey+'"]');
+    if(old) removePrimeInfoFromCard(old);
+  }
+  primeKey = card.getAttribute('data-key');
+  card.classList.add('is-prime');
+  card.setAttribute('draggable', 'false');
+  var grip = card.querySelector('.grip-handle');
+  if(grip){ grip.classList.add('locked'); grip.title = 'Prime Task position is fixed at slot 2'; }
+  if(!card.querySelector('.primetag')){
+    var tag = document.createElement('span');
+    tag.className = 'primetag';
+    tag.textContent = '👑 PRIME';
+    card.querySelector('.tc-top').appendChild(tag);
+  }
+  if(!card.querySelector('.primeinfo')){
+    var info = document.createElement('div');
+    info.className = 'primeinfo';
+    info.innerHTML = '👑 Shares top priority with slot 1 · Developer time reserved: <input type="number" class="prime-capacity-input" value="50" min="1" max="100">%';
+    var status = card.querySelector('.tc-status');
+    status.insertAdjacentElement('afterend', info);
+    info.querySelector('.prime-capacity-input').addEventListener('change', function(e){
+      toast('Prime Task now reserves ' + e.target.value + '% of resource capacity');
+    });
+  }
+  syncPrimeButtons();
+  updatePrimeStatusLine();
+  enforcePrimePosition();
+}
+function removePrimeInfoFromCard(card){
+  card.classList.remove('is-prime');
+  card.setAttribute('draggable', 'true');
+  var grip = card.querySelector('.grip-handle');
+  if(grip){ grip.classList.remove('locked'); grip.title = 'Drag to reorder priority'; }
+  var t = card.querySelector('.primetag'); if(t) t.remove();
+  var i = card.querySelector('.primeinfo'); if(i) i.remove();
+}
+function clearPrime(showToast){
+  if(!primeKey) return;
+  var old = document.querySelector('[data-key="'+primeKey+'"]');
+  if(old) removePrimeInfoFromCard(old);
+  primeKey = null;
+  if(showToast) toast('Prime Task cleared — full capacity returned to main task');
+  syncPrimeButtons();
+  updatePrimeStatusLine();
+}
+function enforcePrimePosition(){
+  if(!primeKey) return;
+  var primeCard = bodyDev.querySelector('[data-key="'+primeKey+'"]');
+  if(!primeCard) return;
+  var others = Array.prototype.filter.call(bodyDev.querySelectorAll('.tcard'), function(c){ return c !== primeCard; });
+  if(others.length === 0) return;
+  bodyDev.insertBefore(primeCard, others[1] || null);
+  renumberDev();
+}
+function updatePrimeStatusLine(){
+  var el = document.getElementById('current-prime-label');
+  var line = document.querySelector('.primestatusline');
+  if(!el || !line) return;
+  el.textContent = primeKey || 'None';
+  line.classList.toggle('none', !primeKey);
+}
+function syncPrimeButtons(){
+  document.querySelectorAll('#body-dev .tcard').forEach(function(card){
+    var btn = card.querySelector('button[data-action="make-prime"]');
+    if(!btn) return;
+    var key = card.getAttribute('data-key');
+    var sp = parseInt(card.getAttribute('data-sp'), 10) || 0;
+    var label = btn.querySelector('.btxt') || btn;
+    if(key === primeKey){
+      btn.disabled = false;
+      btn.classList.add('is-active-prime');
+      btn.title = 'Click to remove Prime status from this task';
+      label.textContent = 'Remove Prime';
+    } else if(primeKey){
+      btn.disabled = true;
+      btn.classList.remove('is-active-prime');
+      btn.title = 'A Prime Task already exists (' + primeKey + ') — remove it first';
+      label.textContent = 'Make Prime ★';
+    } else if(sp > primeSPLimit){
+      btn.disabled = true;
+      btn.classList.remove('is-active-prime');
+      btn.title = 'Exceeds the SP limit (' + sp + ' > ' + primeSPLimit + ' SP)';
+      label.textContent = 'Make Prime ★';
+    } else {
+      btn.disabled = false;
+      btn.classList.remove('is-active-prime');
+      btn.title = '';
+      label.textContent = 'Make Prime ★';
+    }
+  });
+}
+document.getElementById('sp-limit-input').addEventListener('change', function(e){
+  primeSPLimit = parseInt(e.target.value,10) || 25;
+  toast('Prime Task SP limit set to ' + primeSPLimit);
+  renderSP();
+  syncPrimeButtons();
+});
+
+var OTHER_TEAMS = [
+  {name:"Sales Ops Team", xp: 890, level: 6},
+  {name:"Finance Team", xp: 640, level: 5},
+  {name:"Customer Care Team", xp: 410, level: 5}
+];
+function updateLeaderboard(){
+  var rows = OTHER_TEAMS.map(function(t){ return {name:t.name, xp:t.xp, level:t.level, isUs:false}; });
+  rows.push({name:'AI & Tech Team', xp:GAME.xp, level:GAME.level, isUs:true});
+  rows.sort(function(a,b){ return b.xp - a.xp; });
+  var medals = ['🥇','🥈','🥉'];
+  var html = rows.map(function(r,i){
+    var rank = i < 3 ? medals[i] : (i+1);
+    var nameHtml = r.name + (r.isUs ? ' <span class="tb-you">(us)</span>' : '');
+    return '<div class="tb-leader-row'+(r.isUs?' is-us':'')+'"><span class="tb-rank">'+rank+'</span><span class="tb-lname">'+nameHtml+'</span><span class="tb-lxp">Lvl '+r.level+' · '+r.xp+' XP</span></div>';
+  }).join('');
+  document.getElementById('leaderboard').innerHTML = html;
+}
+function unlockBadge(name){
+  if(unlocked[name]) return;
+  unlocked[name] = true;
+  var el = document.querySelector('.tb-badge[data-badge="'+name+'"]');
+  if(el){
+    el.classList.add('unlocked');
+    toast('🏅 Badge unlocked: ' + el.querySelector('.tb-badge-name').textContent);
+  }
+  updateBadgeCount();
+}
+function updateBadgeCount(){
+  var total = document.querySelectorAll('.tb-badge').length;
+  var earned = document.querySelectorAll('.tb-badge.unlocked').length;
+  document.getElementById('badge-count').textContent = earned + '/' + total;
+}
+function checkStreakMilestone(){
+  var hit = STREAK_MILESTONES.find(function(m){ return m.count === GAME.streak; });
+  if(!hit) return;
+  awardXP(hit.bonus, null);
+  var banner = document.getElementById('teambanner');
+  banner.classList.add('milestone');
+  setTimeout(function(){ banner.classList.remove('milestone'); }, 1000);
+  toast('🏆 ' + hit.count + '-task streak! Bonus +' + hit.bonus + ' XP');
+}
+function awardXP(amount, btnRect){
+  GAME.xp += amount;
+  document.getElementById('streak-val').textContent = GAME.streak;
+  var leveledUp = false, leveledDown = false;
+  while(GAME.xp >= GAME.xpMax){
+    GAME.xp -= GAME.xpMax;
+    GAME.level++;
+    GAME.xpMax += 250;
+    leveledUp = true;
+  }
+  while(GAME.xp < 0 && GAME.level > 1){
+    GAME.level--;
+    GAME.xpMax -= 250;
+    GAME.xp += GAME.xpMax;
+    leveledDown = true;
+  }
+  if(GAME.xp < 0) GAME.xp = 0;
+  if(leveledUp) toast('🎉 Level up! Team is now Level ' + GAME.level);
+  if(leveledDown) toast('⚠️ Productivity dropped — Team fell to Level ' + GAME.level);
+  document.getElementById('gxp-val').textContent = GAME.xp;
+  document.getElementById('gxp-max').textContent = GAME.xpMax;
+  document.getElementById('glevel-num').textContent = GAME.level;
+  document.getElementById('glevel-num2').textContent = GAME.level;
+  document.getElementById('xpbar-fill').style.width = Math.min(100,(GAME.xp/GAME.xpMax)*100) + '%';
+  document.getElementById('xpbar-fill').classList.toggle('losing', amount < 0);
+  document.getElementById('xp-needed').textContent = GAME.xpMax - GAME.xp;
+  document.getElementById('next-level-num').textContent = GAME.level + 1;
+  if(leveledUp || leveledDown){
+    var banner = document.getElementById('teambanner');
+    banner.classList.add(leveledUp ? 'levelup' : 'leveldown');
+    setTimeout(function(){ banner.classList.remove('levelup','leveldown'); }, 800);
+  }
+  updateLeaderboard();
+  if(btnRect){
+    var rect = btnRect;
+    var fx = document.createElement('div');
+    fx.className = 'floatxp' + (amount < 0 ? ' neg' : '');
+    fx.textContent = (amount > 0 ? '+' : '') + amount + ' XP';
+    fx.style.left = rect.left + 'px';
+    fx.style.top = rect.top + 'px';
+    document.body.appendChild(fx);
+    requestAnimationFrame(function(){
+      fx.style.transform = 'translateY(' + (amount < 0 ? '10px' : '-34px') + ')';
+      fx.style.opacity = '0';
+    });
+    setTimeout(function(){ fx.remove(); }, 1050);
+  }
+}
+var DEV_RISK_THRESHOLD = 5;
+function computeDevRisk(){
+  document.querySelectorAll('#body-dev .tcard').forEach(function(card){
+    var days = parseInt(card.getAttribute('data-devdays'), 10);
+    if(isNaN(days)) return;
+    var atRisk = days >= DEV_RISK_THRESHOLD;
+    card.classList.toggle('age-warn', atRisk);
+    card.classList.toggle('age-fresh', !atRisk && !card.classList.contains('is-prime'));
+    if(atRisk){
+      setStatus(card, 'st-risk', 'At Risk');
+    } else if(card.querySelector('.pill').classList.contains('st-risk')){
+      setStatus(card, 'st-dev', 'In Development');
+    }
+    var age = card.querySelector('.agebadge');
+    if(age) age.textContent = atRisk ? days + ' days · at risk' : (days + ' day' + (days===1?'':'s') + ' in dev');
+  });
+}
+function addDragHandles(){
+  document.querySelectorAll('.tcard').forEach(function(card){
+    if(card.querySelector('.grip-handle')) return;
+    card.setAttribute('draggable', 'true');
+    var top = card.querySelector('.tc-top');
+    var grip = document.createElement('span');
+    grip.className = 'grip-handle';
+    grip.title = 'Drag to reorder priority';
+    grip.innerHTML = '<svg viewBox="0 0 16 16" width="17" height="19"><circle cx="6" cy="4" r="1.4" fill="currentColor"/><circle cx="6" cy="8" r="1.4" fill="currentColor"/><circle cx="6" cy="12" r="1.4" fill="currentColor"/><circle cx="10" cy="4" r="1.4" fill="currentColor"/><circle cx="10" cy="8" r="1.4" fill="currentColor"/><circle cx="10" cy="12" r="1.4" fill="currentColor"/></svg>';
+    top.insertBefore(grip, top.firstChild);
+  });
+}
+var draggedCard = null;
+function getDragAfterElement(container, y){
+  var cards = Array.prototype.slice.call(container.querySelectorAll('.tcard:not(.dragging)'));
+  return cards.reduce(function(closest, child){
+    var box = child.getBoundingClientRect();
+    var offset = y - box.top - box.height / 2;
+    if(offset < 0 && offset > closest.offset){
+      return {offset: offset, element: child};
+    }
+    return closest;
+  }, {offset: -Infinity, element: null}).element;
+}
+document.addEventListener('dragstart', function(e){
+  var card = e.target.closest('.tcard');
+  if(!card) return;
+  draggedCard = card;
+  setTimeout(function(){ card.classList.add('dragging'); }, 0);
+});
+document.addEventListener('dragend', function(){
+  if(draggedCard) draggedCard.classList.remove('dragging');
+  document.querySelectorAll('.tcard.drag-over-top').forEach(function(c){ c.classList.remove('drag-over-top'); });
+  draggedCard = null;
+});
+document.addEventListener('dragover', function(e){
+  if(draggedCard){
+    var winEdge = 90, y = e.clientY, h = window.innerHeight;
+    if(y < winEdge) window.scrollBy(0, -Math.ceil((winEdge - y) / 5));
+    else if(y > h - winEdge) window.scrollBy(0, Math.ceil((y - (h - winEdge)) / 5));
+  }
+  var body = e.target.closest('.col-body');
+  if(!body || !draggedCard || body !== draggedCard.parentNode) return;
+  e.preventDefault();
+
+  var rect = body.getBoundingClientRect();
+  var EDGE = 50;
+  var y2 = e.clientY;
+  if(y2 - rect.top < EDGE){
+    body.scrollTop -= Math.ceil((EDGE - (y2 - rect.top)) / 4);
+  } else if(rect.bottom - y2 < EDGE){
+    body.scrollTop += Math.ceil((EDGE - (rect.bottom - y2)) / 4);
+  }
+
+  var afterElement = getDragAfterElement(body, e.clientY);
+  document.querySelectorAll('.tcard.drag-over-top').forEach(function(c){ c.classList.remove('drag-over-top'); });
+  if(afterElement) afterElement.classList.add('drag-over-top');
+});
+document.addEventListener('drop', function(e){
+  var body = e.target.closest('.col-body');
+  if(!body || !draggedCard || body !== draggedCard.parentNode) return;
+  e.preventDefault();
+  var afterElement = getDragAfterElement(body, e.clientY);
+  if(afterElement == null){
+    body.appendChild(draggedCard);
+  } else {
+    body.insertBefore(draggedCard, afterElement);
+  }
+  document.querySelectorAll('.tcard.drag-over-top').forEach(function(c){ c.classList.remove('drag-over-top'); });
+  if(body === bodyDev){ if(primeKey) enforcePrimePosition(); else renumberDev(); }
+  toast(draggedCard.getAttribute('data-key') + ' reordered by priority');
+});
+function renderSP(){
+  document.querySelectorAll('.tcard[data-sp]').forEach(function(c){
+    var top = c.querySelector('.tc-top');
+    if(top.querySelector('.tsp')) return;
+    var sp = parseInt(c.getAttribute('data-sp'),10);
+    var span = document.createElement('span');
+    span.className = 'tsp' + (sp > primeSPLimit ? ' over' : '');
+    span.textContent = sp + ' SP';
+    top.appendChild(span);
+  });
+}
+updateBadgeCount();
+updateLeaderboard();
+iconize();
+renderSP();
+syncPrimeButtons();
+updatePrimeStatusLine();
+addDragHandles();
+computeDevRisk();
+(function lockInitialPrime(){
+  if(!primeKey) return;
+  var pc = document.querySelector('[data-key="'+primeKey+'"]');
+  if(!pc) return;
+  pc.setAttribute('draggable', 'false');
+  var g = pc.querySelector('.grip-handle');
+  if(g){ g.classList.add('locked'); g.title = 'Prime Task position is fixed at slot 2'; }
+  enforcePrimePosition();
+})();
+
+setInterval(function(){
+  var staleN = bodyBiz.querySelectorAll('.tcard.age-stale').length;
+  if(staleN > 0){
+    awardXP(-5, null);
+    toast('⏳ Stale backlog is dragging productivity (-5 XP)');
+  }
+}, 25000);
+
+
+
+</script>
+</body></html>
