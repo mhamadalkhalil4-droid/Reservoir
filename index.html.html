@@ -1,4 +1,4 @@
-<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Reservoir — Task Flow</title><link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet"><style>
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Reservoir — Task Flow (v24)</title><link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet"><style>
 :root{
 --bg:#f5f6fb;--surface:#fff;--ink:#0f172a;--ink-2:#334155;--muted:#5b6474;--faint:#94a3b8;
 --border:#e8eaf1;--border-2:#eef1f7;--hair:#f1f3f9;
@@ -35,6 +35,8 @@ h1{font-size:20px;line-height:1.2;margin:0;letter-spacing:-.02em;font-weight:750
 .kpi-ic{width:34px;height:34px;border-radius:10px;display:grid;place-items:center;flex:0 0 auto;font-size:13px;font-weight:800}
 .kpi-indigo{background:var(--indigo-50);color:var(--indigo-600)}
 .kpi-red{background:var(--red-50);color:var(--red-600)}
+.kpi-gold{background:#fff2c2;color:#8a5a00}
+.primecol{background:linear-gradient(180deg,#fffdf5,#fff);border-color:#f0d98c}
 .kpi-main{display:flex;flex-direction:column}
 .kpi-val{font-size:22px;font-weight:800;letter-spacing:-.02em;line-height:1;font-variant-numeric:tabular-nums}
 .kpi-label{font-size:10.5px;color:var(--muted);font-weight:600;margin-top:3px}
@@ -44,7 +46,7 @@ h1{font-size:20px;line-height:1.2;margin:0;letter-spacing:-.02em;font-weight:750
 .kpi-note{font-size:11px;color:var(--muted);font-weight:600;margin-top:8px}
 .kpi-note b{color:var(--ink)}
 
-.board{display:grid;grid-template-columns:1fr 1fr 1.15fr;gap:16px;align-items:start}
+.board{display:grid;grid-template-columns:1fr 1fr 1.1fr 0.72fr;gap:14px;align-items:start}
 .col{background:var(--surface);border:1px solid var(--border);border-radius:18px;box-shadow:var(--shadow-sm);overflow:hidden}
 .col-head{padding:16px 17px 14px;border-bottom:1px solid var(--border-2)}
 .col-tier{font-size:10.5px;font-weight:750;color:var(--faint);text-transform:uppercase;letter-spacing:.06em}
@@ -127,14 +129,13 @@ h1{font-size:20px;line-height:1.2;margin:0;letter-spacing:-.02em;font-weight:750
 .pill.st-risk{background:var(--amber-100);color:var(--amber-700)}
 .pill.st-done{background:var(--emerald-50);color:var(--emerald-700)}
 .pill.st-canceled{background:#f1f5f9;color:#94a3b8}
+.pill.st-ready{background:var(--emerald-50);color:var(--emerald-700)}
 
 .emptyslot{border:1.5px dashed var(--border);border-radius:13px;padding:16px;text-align:center;color:var(--faint);font-size:12px;font-weight:600}
 
 .tsp{font-size:10px;font-weight:750;color:#7c5cff;background:#f2eeff;border-radius:6px;padding:1px 6px;margin-left:2px}
 .tsp.over{color:var(--red-700);background:var(--red-50)}
 
-.primeinfo{margin:8px 0 10px;padding:6px 10px;border-radius:9px;background:linear-gradient(120deg,#fff7e6,#fffdf5);border:1px solid #f4d68a;display:flex;align-items:center;gap:6px;font-size:11px;font-weight:650;color:#8a5a00}
-.primeinfo input[type=number]{width:42px;border:1px solid #f4d68a;border-radius:6px;padding:2px 5px;font:inherit;font-size:11px;text-align:center;color:#0f172a}
 
 .tcard.is-prime{border-color:#f0c14b;background:linear-gradient(180deg,#fffdf5,#fff)}
 .tcard.is-prime::before{background:linear-gradient(180deg,#f0b90b,#f0842a)}
@@ -142,8 +143,6 @@ h1{font-size:20px;line-height:1.2;margin:0;letter-spacing:-.02em;font-weight:750
 
 .splimitbox{display:flex;align-items:center;gap:6px;margin-top:10px;font-size:11px;color:var(--muted);font-weight:600}
 .splimitbox input{width:42px;border:1px solid var(--border);border-radius:6px;padding:2px 5px;font:inherit;font-size:11px;text-align:center}
-.primestatusline{margin-top:9px;font-size:11.5px;font-weight:700;color:#8a5a00;background:#fff7e0;border:1px solid #f4d68a;border-radius:8px;padding:6px 10px;display:inline-block}
-.primestatusline.none{color:var(--muted);background:#f1f3f9;border-color:var(--border)}
 
 .teambanner{position:relative;overflow:hidden;border-radius:20px;padding:20px 24px;color:#fff;background:linear-gradient(120deg,#5b21b6,#7c3aed,#c026d3,#db2777);background-size:300% 300%;animation:gradientShift 12s ease infinite;display:flex;gap:22px;align-items:center;box-shadow:0 12px 32px rgba(124,58,237,.30);margin-bottom:20px;flex-wrap:wrap;transition:filter .3s}
 .teambanner.levelup{animation:gradientShift 12s ease infinite, levelFlash .8s ease}
@@ -170,6 +169,8 @@ h1{font-size:20px;line-height:1.2;margin:0;letter-spacing:-.02em;font-weight:750
 .tb-leader-row{display:flex;align-items:center;gap:8px;font-size:11.5px;font-weight:650;background:rgba(255,255,255,.10);border-radius:8px;padding:5px 9px}
 .tb-leader-row.is-us{background:rgba(255,255,255,.28);box-shadow:0 0 0 1.5px rgba(255,255,255,.5) inset}
 .tb-you{opacity:.75;font-weight:600;font-size:10px}
+.tb-leader-row.is-bottom{background:rgba(239,68,68,.30);box-shadow:0 0 0 1.5px rgba(255,180,180,.55) inset}
+.tb-releg{margin-left:6px;font-size:9px;font-weight:800;background:#dc2626;color:#fff;border-radius:999px;padding:1px 6px;text-transform:uppercase;letter-spacing:.03em}
 .tb-rank{width:16px;text-align:center;font-size:12px}
 .tb-lname{flex:1}
 .tb-lxp{opacity:.85;font-variant-numeric:tabular-nums;font-size:11px}
@@ -181,6 +182,13 @@ h1{font-size:20px;line-height:1.2;margin:0;letter-spacing:-.02em;font-weight:750
 .tb-tiny{opacity:.72;font-weight:500}
 .tb-right{flex:1.2 1 240px;min-width:220px}
 .tb-badges-title{font-size:11px;font-weight:750;opacity:.92;margin-bottom:9px}
+.tb-srcgrid{display:flex;flex-direction:column;gap:5px}
+.tb-src{display:flex;align-items:center;gap:8px;font-size:10.5px;font-weight:650}
+.tb-src-n{width:88px;flex:0 0 auto}
+.tb-src-bar{flex:1;height:6px;border-radius:99px;background:rgba(255,255,255,.22);overflow:hidden}
+.tb-src-bar i{display:block;height:100%;border-radius:99px;background:#fff}
+.tb-src-v{width:52px;text-align:right;font-variant-numeric:tabular-nums;opacity:.9;font-size:10px}
+.tb-penalty{margin-top:9px;font-size:10px;font-weight:650;background:rgba(220,38,38,.30);border-radius:8px;padding:5px 9px}
 .tb-badges-title span{opacity:.85;font-weight:700}
 .tb-badgegrid{display:flex;gap:11px;flex-wrap:wrap}
 .tb-badge{display:flex;flex-direction:column;align-items:center;gap:5px;width:58px;opacity:.42;transition:opacity .3s;cursor:default}
@@ -226,10 +234,10 @@ tbody tr:last-child td{border-bottom:0}
         <div class="brandsep"></div>
         <div>
           <h1>Task Reservoir</h1>
-          <div class="subline">Business backlog → Speccing → Development · live view</div>
+          <div class="subline">Business backlog → Speccing → Development · synced with Jira · live view</div>
         </div>
       </div>
-      <div class="snapshot"><span class="live"></span> Updated 2 min ago · Aug 12, 2026 · <b id="build-tag" style="opacity:.6">build v20-103650</b></div>
+      <div class="snapshot"><span class="live"></span> Updated 2 min ago · Aug 14, 2026 · <b id="build-tag" style="opacity:.6">build v24-081413</b></div>
     </div>
   </div>
 </div>
@@ -241,7 +249,7 @@ tbody tr:last-child td{border-bottom:0}
       <div class="tb-title">AI &amp; Tech Team Progress <span class="tb-info" title="Each team tracks its own XP and level independently — not a shared company pool. This is a fun way to build momentum, not a real business metric.">ⓘ</span></div>
       <div class="tb-sub">Level <b id="glevel-num2">7</b> · <span id="gxp-val">1240</span>/<span id="gxp-max">1500</span> XP</div>
       <div class="tb-xpbar"><div class="tb-xpbar-fill" id="xpbar-fill" style="width:82%"></div></div>
-      <div class="tb-hint">Finishing work pays most: +50 XP per task done (Prime or not) · everything else earns 5–15 · streak milestones (10, 25, 50, 100) give big bonus XP</div>
+      <div class="tb-hint">XP comes from 5 sources — Delivery (% of your team's total assigned Story Points completed), Queue hygiene, Responsiveness, Quality, Engagement · ~900 XP max per week · streak milestones (10, 25, 50, 100) give bonus XP</div>
       <div class="tb-next">🎯 <b id="xp-needed">260</b> XP to Level <b id="next-level-num">8</b> · slowing down costs XP — stay consistent to hold your level</div>
     </div>
   </div>
@@ -253,25 +261,19 @@ tbody tr:last-child td{border-bottom:0}
     </div>
   </div>
   <div class="tb-leader">
-    <div class="tb-leader-title">🏁 Team Leaderboard <span class="tb-tiny">each team's own level progress</span></div>
+    <div class="tb-leader-title">🏁 Team Leaderboard <span class="tb-tiny">XP this week — same 5 sources, same ceiling for every team</span></div>
     <div class="tb-leader-list" id="leaderboard"></div>
   </div>
   <div class="tb-right">
-    <div class="tb-badges-title">Achievements <span id="badge-count">3/4</span> earned</div>
-    <div class="tb-badgegrid" id="badgerow">
-      <div class="tb-badge unlocked" data-badge="closer" title="Mark 5 tasks done">
-        <div class="tb-badge-ic">✅</div><div class="tb-badge-name">Closer</div>
-      </div>
-      <div class="tb-badge unlocked" data-badge="swapper" title="Complete a 1-for-1 swap">
-        <div class="tb-badge-ic">⇄</div><div class="tb-badge-name">Fair Swapper</div>
-      </div>
-      <div class="tb-badge" data-badge="speed" title="Promote 3 tasks in a row">
-        <div class="tb-badge-ic">🚀</div><div class="tb-badge-name">Speed Promoter</div>
-      </div>
-      <div class="tb-badge unlocked" data-badge="prime" title="Activate a Prime Task">
-        <div class="tb-badge-ic">⭐</div><div class="tb-badge-name">Prime Master</div>
-      </div>
+    <div class="tb-badges-title">This week's XP sources <span class="tb-tiny">every team can earn all 5</span></div>
+    <div class="tb-srcgrid">
+      <div class="tb-src"><span class="tb-src-n">Delivery</span><span class="tb-src-bar"><i style="width:72%"></i></span><span class="tb-src-v">215/300</span></div>
+      <div class="tb-src"><span class="tb-src-n">Queue hygiene</span><span class="tb-src-bar"><i style="width:88%"></i></span><span class="tb-src-v">132/150</span></div>
+      <div class="tb-src"><span class="tb-src-n">Responsiveness</span><span class="tb-src-bar"><i style="width:60%"></i></span><span class="tb-src-v">90/150</span></div>
+      <div class="tb-src"><span class="tb-src-n">Quality</span><span class="tb-src-bar"><i style="width:100%"></i></span><span class="tb-src-v">150/150</span></div>
+      <div class="tb-src"><span class="tb-src-n">Engagement</span><span class="tb-src-bar"><i style="width:80%"></i></span><span class="tb-src-v">120/150</span></div>
     </div>
+    <div class="tb-penalty">⚠️ Penalties this week: <b>−45 XP</b> · 1 stale task, 1 missed 48h gate</div>
   </div>
 </div>
 
@@ -282,7 +284,7 @@ tbody tr:last-child td{border-bottom:0}
     <div class="col-head">
       <div class="col-tier">Tier 1</div>
       <div class="col-title">Business backlog</div>
-      <div class="col-desc">Owned by the module BA. Development takes no action here.</div>
+      <div class="col-desc">Owned by the module BA. Promotion to Speccing happens in Jira and syncs here — not editable from this dashboard.</div>
       <div class="col-kpi">
         <div class="kpi-ic kpi-indigo">◧</div>
         <div class="kpi-main">
@@ -298,21 +300,21 @@ tbody tr:last-child td{border-bottom:0}
         <div class="tc-title">Add rejection reason field to termination approvals</div>
         <div class="tc-status"><span class="pill st-pending"><span class="pdot"></span>To Do</span></div>
         <div class="tc-meta"><span class="owner"><span class="avatar">MK</span>Mario</span><span class="agebadge">4 days</span></div>
-        <div class="tc-actions"><button class="abtn primary" data-action="move-speccing">Move to speccing</button><button class="abtn" data-action="refine">Refine</button><button class="abtn danger" data-action="cancel">Cancel</button></div>
+        <div class="tc-actions"><button class="abtn" data-action="refine">Refine</button><button class="abtn danger" data-action="cancel">Cancel</button></div>
       </div>
       <div class="tcard age-fresh" data-key="DPR-118" data-sp="5">
         <div class="tc-top"><span class="tkey">DPR-118</span><span class="tsize">S</span></div>
         <div class="tc-title">Bugs view: link root cause field to Jira custom field</div>
         <div class="tc-status"><span class="pill st-pending"><span class="pdot"></span>To Do</span></div>
         <div class="tc-meta"><span class="owner"><span class="avatar">AM</span>Ahmad</span><span class="agebadge">9 days</span></div>
-        <div class="tc-actions"><button class="abtn primary" data-action="move-speccing">Move to speccing</button><button class="abtn" data-action="refine">Refine</button><button class="abtn danger" data-action="cancel">Cancel</button></div>
+        <div class="tc-actions"><button class="abtn" data-action="refine">Refine</button><button class="abtn danger" data-action="cancel">Cancel</button></div>
       </div>
       <div class="tcard age-warn" data-key="CHT-076" data-sp="34">
         <div class="tc-top"><span class="tkey">CHT-076</span><span class="tsize">L</span></div>
         <div class="tc-title">Per-manager access control for WhatsApp viewer</div>
         <div class="tc-status"><span class="pill st-blocked"><span class="pdot"></span>Blocked by BA</span></div>
         <div class="tc-meta"><span class="owner"><span class="avatar">OY</span>Omar</span><span class="agebadge">31 days</span></div>
-        <div class="tc-actions"><button class="abtn primary" data-action="move-speccing">Move to speccing</button><button class="abtn" data-action="refine">Refine</button><button class="abtn danger" data-action="cancel">Cancel</button></div>
+        <div class="tc-actions"><button class="abtn" data-action="refine">Refine</button><button class="abtn danger" data-action="cancel">Cancel</button></div>
       </div>
       <div class="tcard age-stale" data-key="SAL-053" data-sp="13">
         <div class="tc-top"><span class="tkey">SAL-053</span><span class="tsize">M</span></div>
@@ -326,7 +328,7 @@ tbody tr:last-child td{border-bottom:0}
         <div class="tc-title">Read-only new-hire table filter by department</div>
         <div class="tc-status"><span class="pill st-pending"><span class="pdot"></span>To Do</span></div>
         <div class="tc-meta"><span class="owner"><span class="avatar">AM</span>Ahmad</span><span class="agebadge">2 days</span></div>
-        <div class="tc-actions"><button class="abtn primary" data-action="move-speccing">Move to speccing</button><button class="abtn" data-action="refine">Refine</button><button class="abtn danger" data-action="cancel">Cancel</button></div>
+        <div class="tc-actions"><button class="abtn" data-action="refine">Refine</button><button class="abtn danger" data-action="cancel">Cancel</button></div>
       </div>
     </div>
   </div>
@@ -336,7 +338,7 @@ tbody tr:last-child td{border-bottom:0}
     <div class="col-head">
       <div class="col-tier">Tier 2</div>
       <div class="col-title">Speccing backlog</div>
-      <div class="col-desc">Technical requirements ready. Waiting for a development slot.</div>
+      <div class="col-desc">Waiting for a development slot. Promote unlocks once Jira status shows the spec is approved. Prime is only assigned from Development.</div>
       <div class="col-kpi">
         <div class="kpi-ic kpi-indigo">◨</div>
         <div class="kpi-main">
@@ -346,17 +348,17 @@ tbody tr:last-child td{border-bottom:0}
       </div>
     </div>
     <div class="col-body" id="body-speccing">
-      <div class="tcard age-fresh" data-key="DPR-114" data-sp="13">
+      <div class="tcard age-fresh" data-key="DPR-114" data-sp="13" data-jira-status="In Speccing">
         <div class="tc-top"><span class="tkey">DPR-114</span><span class="tsize">M</span></div>
         <div class="tc-title">Collapsible project panel — persist state per user</div>
         <div class="tc-status"><span class="pill st-spec"><span class="pdot"></span>In Speccing</span></div>
         <div class="tc-meta"><span class="owner"><span class="avatar">RY</span>Rayan</span><span class="agebadge">5 days</span></div>
         <div class="tc-actions"><button class="abtn primary" data-action="promote">Promote</button><button class="abtn" data-action="send-back-ba">Send back to BA</button></div>
       </div>
-      <div class="tcard age-warn" data-key="OSP-239" data-sp="21">
+      <div class="tcard age-warn" data-key="OSP-239" data-sp="21" data-jira-status="Pending PO">
         <div class="tc-top"><span class="tkey">OSP-239</span><span class="tsize">L</span></div>
         <div class="tc-title">Raises table: bulk approve with audit trail</div>
-        <div class="tc-status"><span class="pill st-spec"><span class="pdot"></span>In Speccing</span></div>
+        <div class="tc-status"><span class="pill st-ready"><span class="pdot"></span>Pending PO</span></div>
         <div class="tc-meta"><span class="owner"><span class="avatar">MK</span>Mario</span><span class="agebadge">26 days</span></div>
         <div class="tc-actions"><button class="abtn primary" data-action="promote">Promote</button><button class="abtn" data-action="send-back-ba">Send back to BA</button></div>
       </div>
@@ -372,61 +374,79 @@ tbody tr:last-child td{border-bottom:0}
       <div class="col-kpi">
         <div class="kpi-ic kpi-red">10</div>
         <div class="kpi-main">
-          <div class="kpi-val" id="stat-devfilled">6/10</div>
+          <div class="kpi-val" id="stat-devfilled">5/10</div>
           <div class="kpi-label">dev slots filled</div>
         </div>
-        <div class="kpi-flag" id="devopen-flag"><span id="stat-devopen">4</span> open</div>
+        <div class="kpi-flag" id="devopen-flag"><span id="stat-devopen">5</span> open</div>
       </div>
-      <div class="gauge"><div class="gauge-fill" id="gauge-dev" style="width:60%"></div></div>
+      <div class="gauge"><div class="gauge-fill" id="gauge-dev" style="width:50%"></div></div>
       <div class="kpi-note">⇄ <b id="stat-swaps">3</b> swaps this week · 1-for-1, logged</div>
-      <div class="splimitbox">Prime Task SP limit: <input type="number" id="sp-limit-input" value="25" min="1"> <span>(editable by PM)</span></div>
-      <div class="primestatusline">👑 Current Prime Task: <b id="current-prime-label">DPR-108</b></div>
     </div>
     <div class="col-body" id="body-dev">
-      <div class="tcard age-fresh is-prime" data-key="DPR-108" data-devdays="2" data-sp="13">
-        <div class="tc-top"><span class="slotnum">1</span><span class="tkey">DPR-108</span><span class="tsize">M</span><span class="primetag">👑 PRIME</span></div>
-        <div class="tc-title">DPR dashboard: wire live Jira data to top-10 view</div>
-        <div class="tc-status"><span class="pill st-dev"><span class="pdot"></span>In Development</span></div>
-        <div class="primeinfo">👑 Shares top priority with slot 1 · Developer time reserved: <input type="number" class="prime-capacity-input" value="50" min="1" max="100">%</div>
-        <div class="tc-meta"><span class="owner"><span class="avatar">RY</span>Rayan</span><span class="agebadge">in dev</span></div>
-        <div class="tc-actions"><button class="abtn primary" data-action="mark-done">Mark done</button><button class="abtn" data-action="make-prime"><span class="btxt">Make Prime ★</span></button><button class="abtn ghost" data-action="send-back-spec">Send back to speccing</button></div>
-      </div>
       <div class="tcard age-fresh" data-key="OSP-231" data-devdays="1" data-sp="5">
-        <div class="tc-top"><span class="slotnum">2</span><span class="tkey">OSP-231</span><span class="tsize">S</span></div>
+        <div class="tc-top"><span class="slotnum">1</span><span class="tkey">OSP-231</span><span class="tsize">S</span></div>
         <div class="tc-title">Remove PIL approval step from onboarding flow</div>
         <div class="tc-status"><span class="pill st-dev"><span class="pdot"></span>In Development</span></div>
         <div class="tc-meta"><span class="owner"><span class="avatar">AM</span>Ahmad</span><span class="agebadge">in dev</span></div>
-        <div class="tc-actions"><button class="abtn primary" data-action="mark-done">Mark done</button><button class="abtn" data-action="make-prime"><span class="btxt">Make Prime ★</span></button><button class="abtn ghost" data-action="send-back-spec">Send back to speccing</button></div>
+        <div class="tc-actions"><button class="abtn primary" data-action="mark-done">Mark done</button><button class="abtn" data-action="move-to-prime"><span class="btxt">Move to Prime ★</span></button><button class="abtn ghost" data-action="send-back-spec">Send back to speccing</button></div>
       </div>
       <div class="tcard age-warn" data-key="CHT-071" data-devdays="6" data-sp="30">
-        <div class="tc-top"><span class="slotnum">3</span><span class="tkey">CHT-071</span><span class="tsize">L</span></div>
+        <div class="tc-top"><span class="slotnum">2</span><span class="tkey">CHT-071</span><span class="tsize">L</span></div>
         <div class="tc-title">Bubble-flipped conversation viewer — read receipts</div>
         <div class="tc-status"><span class="pill st-risk"><span class="pdot"></span>At Risk</span></div>
         <div class="tc-meta"><span class="owner"><span class="avatar">OY</span>Omar</span><span class="agebadge">3 days</span></div>
-        <div class="tc-actions"><button class="abtn primary" data-action="mark-done">Mark done</button><button class="abtn" data-action="make-prime"><span class="btxt">Make Prime ★</span></button><button class="abtn ghost" data-action="send-back-spec">Send back to speccing</button></div>
+        <div class="tc-actions"><button class="abtn primary" data-action="mark-done">Mark done</button><button class="abtn" data-action="move-to-prime"><span class="btxt">Move to Prime ★</span></button><button class="abtn ghost" data-action="send-back-spec">Send back to speccing</button></div>
       </div>
       <div class="tcard age-fresh" data-key="SAL-049" data-devdays="3" data-sp="20">
-        <div class="tc-top"><span class="slotnum">4</span><span class="tkey">SAL-049</span><span class="tsize">M</span></div>
+        <div class="tc-top"><span class="slotnum">3</span><span class="tkey">SAL-049</span><span class="tsize">M</span></div>
         <div class="tc-title">IMC middleware — aggregate salary endpoint</div>
         <div class="tc-status"><span class="pill st-dev"><span class="pdot"></span>In Development</span></div>
         <div class="tc-meta"><span class="owner"><span class="avatar">MK</span>Mario</span><span class="agebadge">in dev</span></div>
-        <div class="tc-actions"><button class="abtn primary" data-action="mark-done">Mark done</button><button class="abtn" data-action="make-prime"><span class="btxt">Make Prime ★</span></button><button class="abtn ghost" data-action="send-back-spec">Send back to speccing</button></div>
+        <div class="tc-actions"><button class="abtn primary" data-action="mark-done">Mark done</button><button class="abtn" data-action="move-to-prime"><span class="btxt">Move to Prime ★</span></button><button class="abtn ghost" data-action="send-back-spec">Send back to speccing</button></div>
       </div>
       <div class="tcard age-fresh" data-key="DPR-110" data-devdays="1" data-sp="3">
-        <div class="tc-top"><span class="slotnum">5</span><span class="tkey">DPR-110</span><span class="tsize">S</span></div>
+        <div class="tc-top"><span class="slotnum">4</span><span class="tkey">DPR-110</span><span class="tsize">S</span></div>
         <div class="tc-title">Restyle stat strip — single accent color</div>
         <div class="tc-status"><span class="pill st-dev"><span class="pdot"></span>In Development</span></div>
         <div class="tc-meta"><span class="owner"><span class="avatar">RY</span>Rayan</span><span class="agebadge">in dev</span></div>
-        <div class="tc-actions"><button class="abtn primary" data-action="mark-done">Mark done</button><button class="abtn" data-action="make-prime"><span class="btxt">Make Prime ★</span></button><button class="abtn ghost" data-action="send-back-spec">Send back to speccing</button></div>
+        <div class="tc-actions"><button class="abtn primary" data-action="mark-done">Mark done</button><button class="abtn" data-action="move-to-prime"><span class="btxt">Move to Prime ★</span></button><button class="abtn ghost" data-action="send-back-spec">Send back to speccing</button></div>
       </div>
       <div class="tcard age-fresh" data-key="OSP-235" data-devdays="2" data-sp="8">
-        <div class="tc-top"><span class="slotnum">6</span><span class="tkey">OSP-235</span><span class="tsize">M</span></div>
+        <div class="tc-top"><span class="slotnum">5</span><span class="tkey">OSP-235</span><span class="tsize">M</span></div>
         <div class="tc-title">Separate approval table per request type</div>
         <div class="tc-status"><span class="pill st-dev"><span class="pdot"></span>In Development</span></div>
         <div class="tc-meta"><span class="owner"><span class="avatar">AM</span>Ahmad</span><span class="agebadge">in dev</span></div>
-        <div class="tc-actions"><button class="abtn primary" data-action="mark-done">Mark done</button><button class="abtn" data-action="make-prime"><span class="btxt">Make Prime ★</span></button><button class="abtn ghost" data-action="send-back-spec">Send back to speccing</button></div>
+        <div class="tc-actions"><button class="abtn primary" data-action="mark-done">Mark done</button><button class="abtn" data-action="move-to-prime"><span class="btxt">Move to Prime ★</span></button><button class="abtn ghost" data-action="send-back-spec">Send back to speccing</button></div>
       </div>
-      <div class="emptyslot" id="emptyslot-dev">4 open slots — next promoted automatically from Speccing</div>
+      <div class="emptyslot" id="emptyslot-dev">5 open slots — next promoted automatically from Speccing</div>
+    </div>
+  </div>
+
+  <!-- TIER 4: PRIME -->
+  <div class="col primecol">
+    <div class="col-head">
+      <div class="col-tier">Tier 4</div>
+      <div class="col-title">👑 Prime</div>
+      <div class="col-desc">One urgent task running in parallel, sharing top priority with Dev slot 1.</div>
+      <div class="col-kpi">
+        <div class="kpi-ic kpi-gold">1</div>
+        <div class="kpi-main">
+          <div class="kpi-val" id="stat-primefilled">1/1</div>
+          <div class="kpi-label">prime slot</div>
+        </div>
+      </div>
+      <div class="splimitbox">SP limit: <input type="number" id="sp-limit-input" value="25" min="1"> <span>(PM)</span></div>
+      <div class="splimitbox">Dev time reserved: <input type="number" id="prime-capacity-global" value="50" min="1" max="100">%</div>
+    </div>
+    <div class="col-body" id="body-prime">
+      <div class="tcard is-prime" data-key="DPR-108" data-devdays="2" data-sp="13">
+        <div class="tc-top"><span class="tkey">DPR-108</span><span class="tsize">M</span><span class="primetag">👑 PRIME</span></div>
+        <div class="tc-title">DPR dashboard: wire live Jira data to top-10 view</div>
+        <div class="tc-status"><span class="pill st-dev"><span class="pdot"></span>In Development</span></div>
+        <div class="tc-meta"><span class="owner"><span class="avatar">RY</span>Rayan</span><span class="agebadge">in prime</span></div>
+        <div class="tc-actions"><button class="abtn primary" data-action="mark-done">Mark done</button><button class="abtn ghost" data-action="prime-to-dev">Send back to Dev</button></div>
+      </div>
+      <div class="emptyslot" id="emptyslot-prime" style="display:none">Prime slot open — promote an urgent task here</div>
     </div>
   </div>
 
@@ -463,6 +483,11 @@ tbody tr:last-child td{border-bottom:0}
 var DEV_CAP = 10;
 var primeKey = 'DPR-108';
 var primeSPLimit = 25;
+// Gate for Tier 2 -> Tier 3 (and Tier 2 -> Prime). A task can only be promoted once its real
+// Jira status shows the spec is approved and ready for development.
+// Best match found in the actual Jira workflow (PAY/RPA/TAXI/VPMGOV projects) — confirm the
+// exact status name with your manager and adjust this list if it's not "Pending PO".
+var READY_FOR_DEV_STATUSES = ['Pending PO'];
 var promoteStreak = 0;
 var doneCount = 0;
 var GAME = { xp: 1240, xpMax: 1500, level: 7, streak: 5 };
@@ -476,19 +501,38 @@ var unlocked = {closer:true, swapper:true, prime:true};
 var bodyBiz = document.getElementById('body-business');
 var bodySpec = document.getElementById('body-speccing');
 var bodyDev = document.getElementById('body-dev');
+var bodyPrime = document.getElementById('body-prime');
 var pendingPromoteCard = null;
 
+// Queued so back-to-back toast() calls in the same tick (e.g. autoPromoteFromSpeccing's
+// message followed by a "marked done" confirmation) both get seen instead of the second
+// silently overwriting the first before it renders.
+var toastQueue = [];
+var toastShowing = false;
 function toast(msg){
+  toastQueue.push(msg);
+  if(!toastShowing) showNextToast();
+}
+function showNextToast(){
+  if(toastQueue.length === 0){ toastShowing = false; return; }
+  toastShowing = true;
+  var msg = toastQueue.shift();
   var t = document.getElementById('toast');
   t.textContent = msg;
   t.classList.add('show');
   clearTimeout(t._h);
-  t._h = setTimeout(function(){ t.classList.remove('show'); }, 2600);
+  t._h = setTimeout(function(){
+    t.classList.remove('show');
+    setTimeout(showNextToast, 200);
+  }, 2600);
 }
 
-function setStatus(card, cls, label){
+function setStatus(card, cls, label, isRealJiraStatus){
   var s = card.querySelector('.tc-status');
   s.innerHTML = '<span class="pill '+cls+'"><span class="pdot"></span>'+label+'</span>';
+  // "At Risk" is a dashboard-only overlay (dev-time watchdog), not an actual Jira status —
+  // don't let it clobber the real synced status used for the promote gate.
+  if(isRealJiraStatus !== false) card.setAttribute('data-jira-status', label);
 }
 
 function renumberDev(){
@@ -530,7 +574,14 @@ function refreshCounts(){
   } else {
     empty.style.display = 'none';
   }
+
+  var primeN = bodyPrime.querySelectorAll('.tcard').length;
+  document.getElementById('stat-primefilled').textContent = primeN + '/1';
+  document.getElementById('emptyslot-prime').style.display = primeN === 0 ? '' : 'none';
+
   renumberDev();
+  syncPrimeButtons();
+  syncPromoteButtons();
 }
 
 function logSwap(outKey, inKey, reason){
@@ -550,8 +601,8 @@ function logSwap(outKey, inKey, reason){
 function makeBizActions(){
   var wrap = document.createElement('div');
   wrap.className = 'tc-actions';
-  wrap.innerHTML = '<button class="abtn primary" data-action="move-speccing">Move to speccing</button>'+
-    '<button class="abtn" data-action="refine">Refine</button>'+
+  // No "move to speccing" button — that promotion only happens in Jira and syncs here.
+  wrap.innerHTML = '<button class="abtn" data-action="refine">Refine</button>'+
     '<button class="abtn danger" data-action="cancel">Cancel</button>';
   return wrap;
 }
@@ -566,8 +617,15 @@ function makeDevActions(){
   var wrap = document.createElement('div');
   wrap.className = 'tc-actions';
   wrap.innerHTML = '<button class="abtn primary" data-action="mark-done">Mark done</button>'+
-    '<button class="abtn" data-action="make-prime"><span class="btxt">Make Prime ★</span></button>'+
+    '<button class="abtn" data-action="move-to-prime"><span class="btxt">Move to Prime ★</span></button>'+
     '<button class="abtn ghost" data-action="send-back-spec">Send back to speccing</button>';
+  return wrap;
+}
+function makePrimeActions(){
+  var wrap = document.createElement('div');
+  wrap.className = 'tc-actions';
+  wrap.innerHTML = '<button class="abtn primary" data-action="mark-done">Mark done</button>'+
+    '<button class="abtn ghost" data-action="prime-to-dev">Send back to Dev</button>';
   return wrap;
 }
 
@@ -584,10 +642,7 @@ function moveCard(card, targetBody, actionsFactory, ageClass, flashType){
   targetBody.appendChild(card);
   iconize();
   renderSP();
-  if(targetBody === bodyDev){
-    syncPrimeButtons();
-    enforcePrimePosition();
-  }
+  if(targetBody === bodyDev || targetBody === bodyPrime) syncPrimeButtons();
   playCardTransition(card, flashType);
 }
 function playCardTransition(card, flashType){
@@ -600,9 +655,12 @@ function playCardTransition(card, flashType){
 }
 
 function autoPromoteFromSpeccing(){
-  var next = bodySpec.querySelector('.tcard');
+  var candidates = Array.prototype.slice.call(bodySpec.querySelectorAll('.tcard'));
+  var next = candidates.find(function(c){
+    return READY_FOR_DEV_STATUSES.indexOf(c.getAttribute('data-jira-status') || '') !== -1;
+  });
   if(!next){
-    toast('Slot freed — nothing waiting in Speccing');
+    toast('Slot freed — nothing in Speccing is marked ready in Jira yet');
     refreshCounts();
     return;
   }
@@ -654,8 +712,6 @@ document.getElementById('swap-confirm').addEventListener('click', function(){
   var inCard = pendingPromoteCard;
   if(!outCard || !inCard) return;
 
-  if(outKey === primeKey) clearPrime(false);
-
   setStatus(outCard, 'st-spec', 'In Speccing');
   var age1 = outCard.querySelector('.agebadge'); if(age1) age1.textContent = '0 days';
   moveCard(outCard, bodySpec, makeSpecActions, null, 'down');
@@ -684,14 +740,7 @@ document.addEventListener('click', function(e){
   var action = btn.getAttribute('data-action');
   var btnRect = btn.getBoundingClientRect();
 
-  if(action === 'move-speccing'){
-    setStatus(card, 'st-spec', 'In Speccing');
-    moveCard(card, bodySpec, makeSpecActions, null, 'up');
-    refreshCounts();
-    awardXP(5, btnRect);
-    toast(key + ' moved to Speccing (+5 XP)');
-  }
-  else if(action === 'refine'){
+  if(action === 'refine'){
     awardXP(5, btnRect);
     toast(key + ' — requirements refined by BA (+5 XP)');
   }
@@ -699,10 +748,10 @@ document.addEventListener('click', function(e){
     card.style.opacity = '0';
     card.style.transform = 'scale(.96)';
     setTimeout(function(){ card.remove(); refreshCounts(); }, 150);
-    GAME.streak = 0;
-    document.getElementById('streak-val').textContent = 0;
+    GAME.streak = Math.max(0, GAME.streak - 5);
+    document.getElementById('streak-val').textContent = GAME.streak;
     awardXP(-15, btnRect);
-    toast(key + ' cancelled — streak reset (-15 XP)');
+    toast(key + ' cancelled — streak −5 days (-15 XP)');
   }
   else if(action === 'confirm-valid'){
     card.classList.remove('age-stale');
@@ -720,6 +769,11 @@ document.addEventListener('click', function(e){
     toast(key + ' sent back to BA');
   }
   else if(action === 'promote'){
+    var jStatus = card.getAttribute('data-jira-status') || '';
+    if(READY_FOR_DEV_STATUSES.indexOf(jStatus) === -1){
+      toast('Rejected — Jira status is "' + jStatus + '". Needs to be ' + READY_FOR_DEV_STATUSES.join('/') + ' in Jira first.');
+      return;
+    }
     var devN = bodyDev.querySelectorAll('.tcard').length;
     if(devN >= DEV_CAP){
       openSwapModal(card);
@@ -738,47 +792,77 @@ document.addEventListener('click', function(e){
     awardXP(10, btnRect);
     toast(key + ' promoted to Development (+10 XP)');
   }
-  else if(action === 'make-prime'){
-    if(key === primeKey){
-      clearPrime(true);
-      return;
-    }
+  else if(action === 'move-to-prime'){
     var sp = parseInt(card.getAttribute('data-sp'), 10) || 0;
     if(primeKey){
-      toast('Rejected — A Prime Task already exists. Remove it from its card first.');
+      toast('Rejected — A Prime Task already exists (' + primeKey + '). Send it back to Dev first.');
       return;
     }
     if(sp > primeSPLimit){
       toast('Rejected — Task exceeds the SP limit (' + primeSPLimit + ' SP).');
       return;
     }
-    setPrime(card);
+    primeKey = key;
+    card.classList.add('is-prime');
+    if(!card.querySelector('.primetag')){
+      var ptag = document.createElement('span');
+      ptag.className = 'primetag';
+      ptag.textContent = '👑 PRIME';
+      card.querySelector('.tc-top').appendChild(ptag);
+    }
+    var pAge = card.querySelector('.agebadge');
+    if(pAge) pAge.textContent = 'in prime';
+    moveCard(card, bodyPrime, makePrimeActions, null, 'up');
+    refreshCounts();
+    autoPromoteFromSpeccing();
     unlockBadge('prime');
     awardXP(15, btnRect);
-    toast(key + ' set as Prime Task — shares top priority with slot 1 (+15 XP)');
+    toast(key + ' moved to Prime tier — dev slot freed (+15 XP)');
+  }
+  else if(action === 'prime-to-dev'){
+    if(bodyDev.querySelectorAll('.tcard').length >= DEV_CAP){
+      toast('Rejected — Dev tier is full (' + DEV_CAP + '/' + DEV_CAP + '). Free a slot first.');
+      return;
+    }
+    primeKey = null;
+    card.classList.remove('is-prime');
+    var rt = card.querySelector('.primetag'); if(rt) rt.remove();
+    var num2 = document.createElement('span');
+    num2.className = 'slotnum';
+    card.querySelector('.tc-top').insertBefore(num2, card.querySelector('.tc-top').firstChild);
+    var dAge = card.querySelector('.agebadge');
+    if(dAge) dAge.textContent = 'in dev';
+    moveCard(card, bodyDev, makeDevActions, null, 'down');
+    refreshCounts();
+    toast(key + ' sent back to Dev tier — Prime slot is now open');
   }
   else if(action === 'mark-done'){
     var wasPrime = (key === primeKey);
+    // Task XP = highest of the 3 Jira SP fields × 10 (v2 rules) — data-sp holds that max value.
+    // No SP set = 10 XP floor, same as an under-estimated task.
+    var doneSP = parseInt(card.getAttribute('data-sp'), 10) || 0;
+    var doneXP = doneSP > 0 ? doneSP * 10 : 10;
     card.style.opacity = '0';
     card.style.transform = 'scale(.96)';
     setTimeout(function(){
       card.remove();
+      if(wasPrime) primeKey = null;
       autoPromoteFromSpeccing();
       doneCount++;
       GAME.streak++;
-      awardXP(50, btnRect);
+      awardXP(doneXP, btnRect);
       if(doneCount >= 5) unlockBadge('closer');
       if(wasPrime){
-        clearPrime(false);
-        toast(key + ' (Prime) done — full capacity returned to main task (+50 XP)');
+        refreshCounts();
+        syncPrimeButtons();
+        toast(key + ' (Prime) done — full capacity returned to main task (+' + doneXP + ' XP)');
       } else {
-        toast(key + ' marked done (+50 XP)');
+        toast(key + ' marked done (+' + doneXP + ' XP)');
       }
       checkStreakMilestone();
     }, 150);
   }
   else if(action === 'send-back-spec'){
-    if(key === primeKey) clearPrime(false);
     setStatus(card, 'st-spec', 'In Speccing');
     var age = card.querySelector('.agebadge');
     if(age) age.textContent = '0 days';
@@ -791,7 +875,6 @@ document.addEventListener('click', function(e){
 refreshCounts();
 
 var ICONS = {
-  'move-speccing': '<path d="M3 8h9M8 4l4 4-4 4" stroke="currentColor" stroke-width="1.6" fill="none" stroke-linecap="round" stroke-linejoin="round"/>',
   'refine':        '<path d="M10.3 2.7l3 3L5 14l-3.6.6L2 11z" stroke="currentColor" stroke-width="1.4" fill="none" stroke-linejoin="round"/>',
   'cancel':        '<path d="M4 4l8 8M12 4l-8 8" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/>',
   'confirm-valid': '<path d="M3 8.5l3.2 3.2L13 4.6" stroke="currentColor" stroke-width="1.8" fill="none" stroke-linecap="round" stroke-linejoin="round"/>',
@@ -809,110 +892,49 @@ function iconize(){
     }
   });
 }
-function setPrime(card){
-  if(primeKey && primeKey !== card.getAttribute('data-key')){
-    var old = bodyDev.querySelector('[data-key="'+primeKey+'"]');
-    if(old) removePrimeInfoFromCard(old);
-  }
-  primeKey = card.getAttribute('data-key');
-  card.classList.add('is-prime');
-  card.setAttribute('draggable', 'false');
-  var grip = card.querySelector('.grip-handle');
-  if(grip){ grip.classList.add('locked'); grip.title = 'Prime Task position is fixed at slot 2'; }
-  if(!card.querySelector('.primetag')){
-    var tag = document.createElement('span');
-    tag.className = 'primetag';
-    tag.textContent = '👑 PRIME';
-    card.querySelector('.tc-top').appendChild(tag);
-  }
-  if(!card.querySelector('.primeinfo')){
-    var info = document.createElement('div');
-    info.className = 'primeinfo';
-    info.innerHTML = '👑 Shares top priority with slot 1 · Developer time reserved: <input type="number" class="prime-capacity-input" value="50" min="1" max="100">%';
-    var status = card.querySelector('.tc-status');
-    status.insertAdjacentElement('afterend', info);
-    info.querySelector('.prime-capacity-input').addEventListener('change', function(e){
-      toast('Prime Task now reserves ' + e.target.value + '% of resource capacity');
-    });
-  }
-  syncPrimeButtons();
-  updatePrimeStatusLine();
-  enforcePrimePosition();
-}
-function removePrimeInfoFromCard(card){
-  card.classList.remove('is-prime');
-  card.setAttribute('draggable', 'true');
-  var grip = card.querySelector('.grip-handle');
-  if(grip){ grip.classList.remove('locked'); grip.title = 'Drag to reorder priority'; }
-  var t = card.querySelector('.primetag'); if(t) t.remove();
-  var i = card.querySelector('.primeinfo'); if(i) i.remove();
-}
-function clearPrime(showToast){
-  if(!primeKey) return;
-  var old = document.querySelector('[data-key="'+primeKey+'"]');
-  if(old) removePrimeInfoFromCard(old);
-  primeKey = null;
-  if(showToast) toast('Prime Task cleared — full capacity returned to main task');
-  syncPrimeButtons();
-  updatePrimeStatusLine();
-}
-function enforcePrimePosition(){
-  if(!primeKey) return;
-  var primeCard = bodyDev.querySelector('[data-key="'+primeKey+'"]');
-  if(!primeCard) return;
-  var others = Array.prototype.filter.call(bodyDev.querySelectorAll('.tcard'), function(c){ return c !== primeCard; });
-  if(others.length === 0) return;
-  bodyDev.insertBefore(primeCard, others[1] || null);
-  renumberDev();
-}
-function updatePrimeStatusLine(){
-  var el = document.getElementById('current-prime-label');
-  var line = document.querySelector('.primestatusline');
-  if(!el || !line) return;
-  el.textContent = primeKey || 'None';
-  line.classList.toggle('none', !primeKey);
+function syncPromoteButtons(){
+  document.querySelectorAll('button[data-action="promote"]').forEach(function(btn){
+    var card = btn.closest('.tcard');
+    if(!card) return;
+    var status = card.getAttribute('data-jira-status') || '';
+    var ready = READY_FOR_DEV_STATUSES.indexOf(status) !== -1;
+    btn.disabled = !ready;
+    btn.title = ready ? 'Promote to Development' : 'Blocked — Jira status is "' + status + '", not ' + READY_FOR_DEV_STATUSES.join('/');
+  });
 }
 function syncPrimeButtons(){
-  document.querySelectorAll('#body-dev .tcard').forEach(function(card){
-    var btn = card.querySelector('button[data-action="make-prime"]');
-    if(!btn) return;
-    var key = card.getAttribute('data-key');
+  var primeFull = !!primeKey;
+  document.querySelectorAll('button[data-action="move-to-prime"]').forEach(function(btn){
+    var card = btn.closest('.tcard');
+    if(!card) return;
     var sp = parseInt(card.getAttribute('data-sp'), 10) || 0;
-    var label = btn.querySelector('.btxt') || btn;
-    if(key === primeKey){
-      btn.disabled = false;
-      btn.classList.add('is-active-prime');
-      btn.title = 'Click to remove Prime status from this task';
-      label.textContent = 'Remove Prime';
-    } else if(primeKey){
+    if(primeFull){
       btn.disabled = true;
-      btn.classList.remove('is-active-prime');
-      btn.title = 'A Prime Task already exists (' + primeKey + ') — remove it first';
-      label.textContent = 'Make Prime ★';
+      btn.title = 'Prime tier is occupied by ' + primeKey;
     } else if(sp > primeSPLimit){
       btn.disabled = true;
-      btn.classList.remove('is-active-prime');
       btn.title = 'Exceeds the SP limit (' + sp + ' > ' + primeSPLimit + ' SP)';
-      label.textContent = 'Make Prime ★';
     } else {
       btn.disabled = false;
-      btn.classList.remove('is-active-prime');
-      btn.title = '';
-      label.textContent = 'Make Prime ★';
+      btn.title = 'Move this task into the Prime tier';
     }
   });
 }
 document.getElementById('sp-limit-input').addEventListener('change', function(e){
   primeSPLimit = parseInt(e.target.value,10) || 25;
   toast('Prime Task SP limit set to ' + primeSPLimit);
+  document.querySelectorAll('.tsp').forEach(function(t){ t.remove(); });
   renderSP();
   syncPrimeButtons();
 });
+document.getElementById('prime-capacity-global').addEventListener('change', function(e){
+  toast('Prime Task now reserves ' + e.target.value + '% of developer time');
+});
 
 var OTHER_TEAMS = [
-  {name:"Sales Ops Team", xp: 890, level: 6},
-  {name:"Finance Team", xp: 640, level: 5},
-  {name:"Customer Care Team", xp: 410, level: 5}
+  {name:"SMM Team", xp: 720, level: 8},
+  {name:"VPM Gov Team", xp: 655, level: 6},
+  {name:"RPA Team", xp: 430, level: 5}
 ];
 function updateLeaderboard(){
   var rows = OTHER_TEAMS.map(function(t){ return {name:t.name, xp:t.xp, level:t.level, isUs:false}; });
@@ -920,27 +942,19 @@ function updateLeaderboard(){
   rows.sort(function(a,b){ return b.xp - a.xp; });
   var medals = ['🥇','🥈','🥉'];
   var html = rows.map(function(r,i){
-    var rank = i < 3 ? medals[i] : (i+1);
+    var last = (i === rows.length - 1);
+    var rank = last ? '⚠️' : (i < 3 ? medals[i] : (i+1));
     var nameHtml = r.name + (r.isUs ? ' <span class="tb-you">(us)</span>' : '');
-    return '<div class="tb-leader-row'+(r.isUs?' is-us':'')+'"><span class="tb-rank">'+rank+'</span><span class="tb-lname">'+nameHtml+'</span><span class="tb-lxp">Lvl '+r.level+' · '+r.xp+' XP</span></div>';
+    var tail = last ? '<span class="tb-releg">at risk</span>' : '';
+    return '<div class="tb-leader-row'+(r.isUs?' is-us':'')+(last?' is-bottom':'')+'"><span class="tb-rank">'+rank+'</span><span class="tb-lname">'+nameHtml+tail+'</span><span class="tb-lxp">Lvl '+r.level+' · '+r.xp+' XP</span></div>';
   }).join('');
   document.getElementById('leaderboard').innerHTML = html;
 }
 function unlockBadge(name){
   if(unlocked[name]) return;
   unlocked[name] = true;
-  var el = document.querySelector('.tb-badge[data-badge="'+name+'"]');
-  if(el){
-    el.classList.add('unlocked');
-    toast('🏅 Badge unlocked: ' + el.querySelector('.tb-badge-name').textContent);
-  }
-  updateBadgeCount();
 }
-function updateBadgeCount(){
-  var total = document.querySelectorAll('.tb-badge').length;
-  var earned = document.querySelectorAll('.tb-badge.unlocked').length;
-  document.getElementById('badge-count').textContent = earned + '/' + total;
-}
+function updateBadgeCount(){}
 function checkStreakMilestone(){
   var hit = STREAK_MILESTONES.find(function(m){ return m.count === GAME.streak; });
   if(!hit) return;
@@ -1007,7 +1021,7 @@ function computeDevRisk(){
     card.classList.toggle('age-warn', atRisk);
     card.classList.toggle('age-fresh', !atRisk && !card.classList.contains('is-prime'));
     if(atRisk){
-      setStatus(card, 'st-risk', 'At Risk');
+      setStatus(card, 'st-risk', 'At Risk', false);
     } else if(card.querySelector('.pill').classList.contains('st-risk')){
       setStatus(card, 'st-dev', 'In Development');
     }
@@ -1084,7 +1098,7 @@ document.addEventListener('drop', function(e){
     body.insertBefore(draggedCard, afterElement);
   }
   document.querySelectorAll('.tcard.drag-over-top').forEach(function(c){ c.classList.remove('drag-over-top'); });
-  if(body === bodyDev){ if(primeKey) enforcePrimePosition(); else renumberDev(); }
+  if(body === bodyDev) renumberDev();
   toast(draggedCard.getAttribute('data-key') + ' reordered by priority');
 });
 function renderSP(){
@@ -1103,18 +1117,9 @@ updateLeaderboard();
 iconize();
 renderSP();
 syncPrimeButtons();
-updatePrimeStatusLine();
+syncPromoteButtons();
 addDragHandles();
 computeDevRisk();
-(function lockInitialPrime(){
-  if(!primeKey) return;
-  var pc = document.querySelector('[data-key="'+primeKey+'"]');
-  if(!pc) return;
-  pc.setAttribute('draggable', 'false');
-  var g = pc.querySelector('.grip-handle');
-  if(g){ g.classList.add('locked'); g.title = 'Prime Task position is fixed at slot 2'; }
-  enforcePrimePosition();
-})();
 
 setInterval(function(){
   var staleN = bodyBiz.querySelectorAll('.tcard.age-stale').length;
